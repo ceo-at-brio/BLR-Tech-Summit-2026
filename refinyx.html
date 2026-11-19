@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftwareBrio × Refinyx — Digital Infrastructure Proposal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#142028;
+    --ink-soft:#3d4f5c;
+    --muted:#6b7c88;
+    --line:#d9e2e8;
+    --bg:#f3f6f8;
+    --card:#ffffff;
+    --brand:#0d5c63;
+    --brand-deep:#083e43;
+    --brand-soft:#e4f3f4;
+    --accent:#c45c26;
+    --accent-soft:#fbebE3;
+    --signal:#1a7a4c;
+    --signal-soft:#e5f5ec;
+    --steel:#1e2d38;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(20,32,40,.05), 0 10px 28px rgba(20,32,40,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line);scroll-margin-top:68px}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:-.01em;white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--muted);font-weight:500}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:
+      radial-gradient(ellipse 80% 60% at 85% 20%, rgba(196,92,38,.28), transparent 55%),
+      radial-gradient(ellipse 60% 50% at 10% 80%, rgba(13,92,99,.35), transparent 50%),
+      linear-gradient(155deg,#0b1a22 0%,#14303a 48%,#1a4550 100%);
+    color:#fff;padding:76px 0 68px;border:none;position:relative;overflow:hidden;
+  }
+  .cover::before{
+    content:"";position:absolute;inset:0;opacity:.18;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:linear-gradient(180deg,#000 20%,transparent 90%);
+  }
+  .cover .wrap{position:relative}
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(28px,4.2vw,46px);line-height:1.12;margin:0 0 16px;
+    letter-spacing:-.03em;font-weight:700;max-width:18ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.86);max-width:62ch;margin:0 0 34px}
+  .cover .sub strong{color:#fff;font-weight:600}
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:11px 16px;border-radius:10px;min-width:150px;
+    backdrop-filter:blur(8px);
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;
+    letter-spacing:-.022em;font-weight:700;
+  }
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media screen and (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{
+    display:block;font-family:"Space Grotesk",sans-serif;font-size:27px;line-height:1.1;
+    letter-spacing:-.03em;color:var(--brand);font-weight:700;
+  }
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .sysflow{margin-top:26px}
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#bfe4d0;background:linear-gradient(180deg,#f2faf5 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#f0d0bc;background:linear-gradient(180deg,#fff7f2 0%,#fff 55%)}
+  .sys-block.later{border-color:#b8dce0;background:linear-gradient(180deg,#f2f9fa 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--signal);background:var(--signal-soft)}
+  .sys-block.stretch .slabel{color:var(--accent);background:var(--accent-soft)}
+  .sys-block.later .slabel{color:var(--brand);background:var(--brand-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:18px;letter-spacing:-.015em;font-family:"Space Grotesk",sans-serif}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+
+  .timeline{position:relative;margin:22px 0 0;padding-left:0}
+  .tl-item{display:grid;grid-template-columns:118px 1fr;gap:18px;position:relative;padding-bottom:22px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{
+    content:"";position:absolute;left:118px;top:26px;bottom:-2px;width:2px;
+    background:var(--line);transform:translateX(-1px);
+  }
+  .tl-item:last-child::before{display:none}
+  .tl-time{
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;
+    color:var(--brand);padding-top:2px;
+  }
+  .tl-body{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;box-shadow:var(--shadow)}
+  .tl-body h5{margin:0 0 5px;font-size:14px;font-weight:650}
+  .tl-body p{margin:0;font-size:13.4px;color:var(--ink-soft)}
+  @media screen and (max-width:620px){
+    .tl-item{grid-template-columns:1fr;gap:8px}
+    .tl-item::before{display:none}
+    .tl-time{text-align:left}
+  }
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-size:13.4px;min-width:640px}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:#f7fafb;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:#fafcfd}
+  .tag{
+    display:inline-block;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:6px;
+    background:var(--brand-soft);color:var(--brand);white-space:nowrap;
+  }
+  .tag.green{background:var(--signal-soft);color:var(--signal)}
+  .tag.gold{background:var(--accent-soft);color:var(--accent)}
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--signal);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--signal-soft);border:1px solid #bfe4d0;border-left:3px solid var(--signal);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#0f4d30;
+  }
+  .callout b{color:#0a3823}
+  .callout.warn{background:var(--accent-soft);border-color:#f0d0bc;border-left-color:var(--accent);color:#7a3a16}
+  .callout.warn b{color:#5c2a0f}
+  .callout.soft{background:var(--brand-soft);border-color:#b8dce0;border-left-color:var(--brand);color:#0a454a}
+  .callout.soft b{color:#083e43}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+  .pill.in{background:var(--brand-soft);border-color:#b8dce0;color:var(--brand)}
+  .pill.out{background:#f7f8fa;color:var(--muted);text-decoration:line-through;opacity:.75}
+
+  .flowstrip{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin:22px 0 8px;
+  }
+  @media screen and (max-width:980px){
+    .flowstrip{grid-template-columns:repeat(3,1fr);gap:10px}
+    .flow-node:nth-child(3)::after{display:none}
+  }
+  @media screen and (max-width:560px){
+    .flowstrip{grid-template-columns:1fr 1fr}
+    .flow-node:nth-child(even)::after{display:none}
+  }
+  .flow-node{text-align:center;padding:0 6px;position:relative}
+  .flow-node::after{
+    content:"→";position:absolute;right:-4px;top:16px;color:var(--muted);font-size:15px;font-weight:600;
+  }
+  .flow-node:last-child::after{display:none}
+  .flow-node .n{
+    width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;margin-bottom:8px;
+  }
+  .flow-node h5{margin:0 0 2px;font-size:12.5px;font-weight:700}
+  .flow-node p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.35}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  .jstep.full{grid-template-columns:1fr}
+  @media screen and (max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .desk{
+    background:#dfe6eb;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f4f7f9;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f7fafb;
+    font-size:12px;font-weight:650;color:var(--muted);flex-wrap:wrap;
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media screen and (max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+  .kpi{
+    background:#f7fafb;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  }
+  .kpi .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .v{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+  .kpi .d{font-size:11px;color:var(--signal);font-weight:600;margin-top:2px}
+  .kpi .d.down{color:var(--accent)}
+
+  .chart{
+    height:110px;border:1px solid var(--line);border-radius:10px;background:
+      linear-gradient(180deg,rgba(13,92,99,.06),transparent 70%),
+      #fafcfd;
+    position:relative;overflow:hidden;margin-bottom:12px;
+  }
+  .chart svg{width:100%;height:100%;display:block}
+  .series-lbl{
+    position:absolute;top:8px;left:10px;font-size:11px;font-weight:700;color:var(--ink-soft);
+  }
+
+  .corr-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}
+  @media screen and (max-width:700px){.corr-grid{grid-template-columns:1fr}}
+
+  .lab-card{
+    border:1px solid var(--line);border-radius:10px;padding:12px;background:#fff;
+  }
+  .lab-card h6{margin:0 0 8px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .lab-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:12.5px;padding:7px 0;border-bottom:1px dashed var(--line);
+  }
+  .lab-row:last-child{border-bottom:none}
+  .lab-row b{font-weight:650}
+  .okdot{width:8px;height:8px;border-radius:50%;background:var(--signal);display:inline-block;margin-right:6px}
+
+  .map-wrap{
+    height:168px;border-radius:10px;border:1px solid var(--line);overflow:hidden;
+    background:
+      radial-gradient(circle at 28% 42%, rgba(13,92,99,.25), transparent 28%),
+      radial-gradient(circle at 72% 38%, rgba(196,92,38,.22), transparent 24%),
+      radial-gradient(circle at 55% 68%, rgba(26,122,76,.2), transparent 22%),
+      linear-gradient(160deg,#e8eef2,#d5e0e6);
+    position:relative;
+  }
+  .pin{
+    position:absolute;transform:translate(-50%,-50%);
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:5px 8px;font-size:10.5px;font-weight:700;box-shadow:0 4px 12px rgba(20,32,40,.12);
+    white-space:nowrap;
+  }
+  .pin::before{
+    content:"";position:absolute;left:50%;bottom:-5px;width:8px;height:8px;
+    background:inherit;border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    transform:translateX(-50%) rotate(45deg);
+  }
+  .pin.live{border-color:#b8dce0}
+  .pin .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--signal);margin-right:5px;animation:pulse 1.6s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .site-list{margin-top:12px}
+  .site{
+    display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;
+    padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;font-size:12.5px;
+  }
+  .site:last-child{margin-bottom:0}
+  .site b{display:block}
+  .site small{color:var(--muted)}
+  .site .st{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--signal)}
+  .site .st.warn{color:var(--accent)}
+
+  .portal-hero{
+    background:linear-gradient(135deg,#0b1a22,#1a4550);
+    color:#fff;border-radius:10px;padding:16px;margin-bottom:12px;
+  }
+  .portal-hero h6{margin:0 0 4px;font-family:"Space Grotesk",sans-serif;font-size:16px}
+  .portal-hero p{margin:0;font-size:12px;opacity:.78}
+  .file-row{
+    display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px;
+  }
+  .file-row:last-child{border-bottom:none}
+  .file-ico{
+    width:32px;height:32px;border-radius:8px;background:var(--brand-soft);color:var(--brand);
+    display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;
+  }
+
+  .arch{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin-top:18px;
+  }
+  @media screen and (max-width:760px){
+    .arch{grid-template-columns:1fr;gap:10px}
+    .arch .arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .arch-box{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow);
+  }
+  .arch-box.core{border-color:#b8dce0;background:linear-gradient(180deg,#f2f9fa,#fff)}
+  .arch-box h5{margin:0 0 4px;font-size:13px;font-weight:700}
+  .arch-box p{margin:0;font-size:11.5px;color:var(--muted)}
+  .arch .arrow{color:var(--muted);font-weight:700;font-size:18px}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+
+  .steps{counter-reset:ns;margin:18px 0 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:ns;position:relative;padding:16px 16px 16px 58px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(ns);position:absolute;left:16px;top:16px;
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .steps li b{color:var(--ink)}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+
+  @page{
+    size: Letter;
+    margin: 0.4in 0.45in;
+  }
+
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{background:#fff !important;width:auto !important;max-width:none !important}
+    .topbar{display:none !important}
+    .wrap{max-width:none !important;width:100% !important;padding:0 !important;margin:0 !important}
+    section{
+      padding:18px 0 !important;
+      border-top:1px solid var(--line);
+      break-inside:auto;
+      page-break-inside:auto;
+      scroll-margin-top:0;
+    }
+    section:first-of-type{border-top:none}
+    .cover{
+      background:linear-gradient(155deg,#0b1a22 0%,#14303a 48%,#1a4550 100%) !important;
+      padding:28px 22px 24px !important;
+      margin:0 0 8px !important;
+      overflow:visible !important;
+      border-radius:14px;
+      break-after:auto;
+      page-break-after:auto;
+    }
+    .cover::before{opacity:.12}
+    .cover h1{font-size:26px !important;max-width:22ch}
+    .cover .sub{font-size:13px !important;margin-bottom:16px !important}
+    .meta{gap:8px}
+    .meta div{min-width:0;flex:1 1 130px;padding:8px 11px}
+    h2,h3,h4,.kicker{
+      break-after:avoid;
+      page-break-after:avoid;
+    }
+    h2{font-size:20px !important}
+    .lede{font-size:13px !important}
+    .kicker{margin-bottom:6px}
+
+    /* Keep designed columns — print viewport is narrow and would otherwise stack everything */
+    .grid.g2{grid-template-columns:repeat(2,1fr) !important}
+    .grid.g3{grid-template-columns:repeat(3,1fr) !important}
+    .grid.g4{grid-template-columns:repeat(4,1fr) !important}
+    .arch{
+      grid-template-columns:1fr auto 1fr auto 1fr !important;
+      gap:8px !important;
+    }
+    .arch .arrow{transform:none !important}
+    .flowstrip{grid-template-columns:repeat(6,1fr) !important;gap:0 !important}
+    .flow-node::after{display:block !important}
+    .flow-node:last-child::after{display:none !important}
+    .kpi-row{grid-template-columns:repeat(4,1fr) !important}
+    .corr-grid{grid-template-columns:1.2fr .8fr !important}
+    .tl-item{grid-template-columns:100px 1fr !important}
+
+    /* Stack journey rows for print so mockups are not clipped mid-column */
+    .jstep,.jstep.reverse{
+      grid-template-columns:1fr !important;
+      gap:14px !important;
+      margin-top:18px !important;
+      break-inside:auto;
+      page-break-inside:auto;
+    }
+    .jcopy,.desk,.sys-block,.card,.stat,.tl-body,.tablewrap,.callout,.steps li,.arch,.flowstrip{
+      break-inside:avoid;
+      page-break-inside:avoid;
+      box-shadow:none !important;
+    }
+    .desk{max-width:100% !important;padding:8px !important}
+    .desk-main{padding:12px 14px !important}
+    .desk-navrow{flex-wrap:wrap}
+    .map-wrap{height:140px}
+    .chart{height:96px}
+    .pillrow{gap:6px}
+    .pill{font-size:11px;padding:5px 10px}
+    table{min-width:0 !important;width:100% !important}
+    .tablewrap{overflow:visible !important}
+    footer{padding:18px 0 8px !important}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">SoftwareBrio <span>× Refinyx</span></div>
+    <nav>
+      <a href="#value">Value</a>
+      <a href="#loophouse">Loophouse</a>
+      <a href="#plants">Global plants</a>
+      <a href="#security">IP &amp; security</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#next">Next steps</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Technical partnership proposal</div>
+    <h1>Digital Infrastructure for Pilot Velocity &amp; Global Plant Optimization</h1>
+    <p class="sub">Sitting cleanly on top of your plant controls — so Refinyx stays focused on hydrometallurgy, flowsheet engineering, and plant delivery.<br>
+    Prepared for <strong>Dr. Mahmood Alemrajabi</strong>, Co-Founder &amp; CEO, Refinyx · by SoftwareBrio · November 2026</p>
+    <div class="meta">
+      <div><span>Phase 1</span><b>Targeted MVP sprint</b></div>
+      <div><span>Effort</span><b>Weeks 1–6</b></div>
+      <div><span>Focus</span><b>Loophouse or remote skids</b></div>
+      <div><span>Model</span><b>Dedicated tech arm</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="glance">
+  <div class="wrap">
+    <div class="kicker">Executive summary</div>
+    <h2>Industrial execution needs industrial software — without building it in-house</h2>
+    <p class="lede">Refinyx has proven that scaling critical materials recovery requires more than chemistry — it requires pilot validation at Loophouse, commercial equipment partnerships like Alfa Laval, and staying with customers through commissioning and years of post-launch optimization.</p>
+    <p class="lede">As you scale across Europe, the US, and India, your core team should stay on hydrometallurgy and plant delivery — not internal software infrastructure. SoftwareBrio proposes serving as your dedicated software, Industrial IoT, and data engineering partner.</p>
+
+    <div class="grid g4" style="margin-top:26px">
+      <div class="stat"><b>6 wks</b><span>Phase 1 fixed-scope MVP sprint</span></div>
+      <div class="stat"><b>2 tracks</b><span>Loophouse SCADA↔QC or remote skid telemetry</span></div>
+      <div class="stat"><b>100%</b><span>IP ownership retained by Refinyx</span></div>
+      <div class="stat"><b>EU</b><span>Sovereign deployment in your tenant / on-prem</span></div>
+    </div>
+
+    <div class="arch">
+      <div class="arch-box">
+        <h5>Existing OT</h5>
+        <p>PLC · SCADA · historians · lab systems</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="arch-box core">
+        <h5>SoftwareBrio layer</h5>
+        <p>Pipelines · portals · analytics · alerts</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="arch-box">
+        <h5>Refinyx outcomes</h5>
+        <p>Faster pilots · guarantee KPIs · OPEX</p>
+      </div>
+    </div>
+    <p class="mockcap">We enhance your stack — we do not replace plant controls.</p>
+  </div>
+</section>
+
+<section id="value">
+  <div class="wrap">
+    <div class="kicker">Where we deliver</div>
+    <h2>Immediate value on two fronts</h2>
+    <p class="lede">One partner covering the pilot hall you already run and the commercial plants you will commission across continents.</p>
+
+    <div class="sysflow grid g2">
+      <div class="sys-block lock">
+        <div class="slabel">A · Loophouse, Västerås</div>
+        <h3>Unify pilot SCADA &amp; same-day QC</h3>
+        <p class="sdesc">Automated pipelines connect continuous 50&nbsp;kg/h pilot-hall telemetry with same-day QC lab results — no more spreadsheet stitching between shifts.</p>
+        <div class="sys-pipes">
+          <span>SCADA / historian ingest</span>
+          <span>Lab / LIMS join</span>
+          <span>Feedstock → purity</span>
+          <span>Mass &amp; energy balance</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">B · Europe, US &amp; India</div>
+        <h3>Remote telemetry &amp; client portal</h3>
+        <p class="sdesc">Hardware-agnostic aggregation of approved skid telemetry into one secure engineering view in Sweden — plus a client portal for pilot tracking and package handoffs.</p>
+        <div class="sys-pipes">
+          <span>OPC-UA</span>
+          <span>Modbus</span>
+          <span>MQTT</span>
+          <span>Secure APIs</span>
+          <span>Client portal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="loophouse">
+  <div class="wrap">
+    <div class="kicker">Track A · Pilot velocity</div>
+    <h2>What a Loophouse campaign day looks like</h2>
+    <p class="lede">Rather than replacing existing PLC/SCADA historians or lab software, we build the connective tissue: continuous hall telemetry joined to same-day QC, so engineers correlate feedstock to purity across NMC/LFP black mass, rare earths, and phosphorus — calibrated to your physical mass-and-energy balances.</p>
+
+    <div class="flowstrip">
+      <div class="flow-node"><div class="n">1</div><h5>Ingest</h5><p>Hall telemetry</p></div>
+      <div class="flow-node"><div class="n">2</div><h5>Join</h5><p>Same-day QC</p></div>
+      <div class="flow-node"><div class="n">3</div><h5>Correlate</h5><p>Feedstock → purity</p></div>
+      <div class="flow-node"><div class="n">4</div><h5>Balance</h5><p>Mass &amp; energy</p></div>
+      <div class="flow-node"><div class="n">5</div><h5>Decide</h5><p>Campaign moves</p></div>
+      <div class="flow-node"><div class="n">6</div><h5>Archive</h5><p>Run evidence</p></div>
+    </div>
+
+    <div class="jstep" style="margin-top:34px">
+      <div class="jcopy">
+        <h4>One screen instead of three spreadsheets</h4>
+        <p>Shift handovers stop living in Excel. Continuous 50&nbsp;kg/h signals sit beside same-day lab assays so the campaign lead sees drift early — before the next feedstock change.</p>
+        <p>Decision-support analytics stay tied to your balances, not generic dashboards. Every view is built around how Refinyx actually runs Loophouse.</p>
+        <div class="callout soft" style="margin-top:14px">
+          <b>Industrial outcome.</b> Faster feedstock-to-purity correlation across diverse streams, with less manual stitching between operations and QC.
+        </div>
+      </div>
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">ops.refinyx.eu / loophouse / campaign-47</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Overview</span>
+              <span>Telemetry</span>
+              <span>QC lab</span>
+              <span>Balances</span>
+              <span>Runs</span>
+            </div>
+            <div class="desk-main">
+              <div class="kpi-row">
+                <div class="kpi"><div class="l">Throughput</div><div class="v">48.2</div><div class="d">kg/h · stable</div></div>
+                <div class="kpi"><div class="l">Li recovery</div><div class="v">92.4%</div><div class="d">+1.1% vs last</div></div>
+                <div class="kpi"><div class="l">QC lag</div><div class="v">2.1h</div><div class="d">same-day</div></div>
+                <div class="kpi"><div class="l">Alerts</div><div class="v">1</div><div class="d down">pH drift · L3</div></div>
+              </div>
+              <div class="corr-grid">
+                <div class="chart">
+                  <div class="series-lbl">Hall telemetry · last 12h · overlay QC samples</div>
+                  <svg viewBox="0 0 400 110" preserveAspectRatio="none" aria-hidden="true">
+                    <polyline fill="none" stroke="#0d5c63" stroke-width="2.5" points="0,78 40,72 80,74 120,58 160,62 200,48 240,52 280,40 320,44 360,30 400,34"/>
+                    <polyline fill="none" stroke="#c45c26" stroke-width="2" stroke-dasharray="4 3" points="0,88 40,84 80,80 120,76 160,70 200,66 240,60 280,58 320,50 360,48 400,42"/>
+                    <circle cx="120" cy="58" r="4" fill="#1a7a4c"/>
+                    <circle cx="240" cy="52" r="4" fill="#1a7a4c"/>
+                    <circle cx="360" cy="30" r="4" fill="#1a7a4c"/>
+                  </svg>
+                </div>
+                <div class="lab-card">
+                  <h6>Same-day QC</h6>
+                  <div class="lab-row"><span><span class="okdot"></span>Assay 14:20</span><b>Li 3.82%</b></div>
+                  <div class="lab-row"><span><span class="okdot"></span>Assay 11:05</span><b>Ni 11.4%</b></div>
+                  <div class="lab-row"><span><span class="okdot"></span>Assay 08:40</span><b>Co 4.1%</b></div>
+                  <div class="lab-row"><span>Feedstock</span><b>NMC black mass</b></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative Loophouse campaign view — SCADA joined to QC, not a greenfield MES.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plants">
+  <div class="wrap">
+    <div class="kicker">Track B · Global delivery</div>
+    <h2>One engineering view for plants on three continents</h2>
+    <p class="lede">Using standard industrial protocols, we aggregate approved telemetry from commercial skids into a single secure view in Sweden — so Refinyx engineers can support remote commissioning, track guarantee KPIs, and optimize OPEX for years after launch.</p>
+
+    <div class="jstep reverse">
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">ops.refinyx.eu / fleet</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Fleet map</span>
+              <span>Commissioning</span>
+              <span>Guarantee KPIs</span>
+              <span>OPEX</span>
+            </div>
+            <div class="desk-main">
+              <div class="map-wrap">
+                <div class="pin live" style="left:28%;top:42%"><span class="dot"></span>Västerås · pilot</div>
+                <div class="pin" style="left:72%;top:36%">US Midwest · skid</div>
+                <div class="pin" style="left:55%;top:68%">India · commissioning</div>
+              </div>
+              <div class="site-list">
+                <div class="site">
+                  <div><b>Loophouse · Västerås</b><small>50 kg/h pilot hall · live</small></div>
+                  <div class="st">Online</div>
+                  <div><span class="tag green">OK</span></div>
+                </div>
+                <div class="site">
+                  <div><b>Partner plant · EU</b><small>Guarantee week 14 · recovery</small></div>
+                  <div class="st">Tracking</div>
+                  <div><span class="tag">KPI</span></div>
+                </div>
+                <div class="site">
+                  <div><b>Customer skid · India</b><small>Remote commissioning · day 6</small></div>
+                  <div class="st warn">Watch</div>
+                  <div><span class="tag gold">Alert</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Hardware-agnostic fleet view — OPC-UA, Modbus, MQTT, secure APIs.</p>
+      </div>
+      <div class="jcopy">
+        <h4>Remote commissioning without flying every engineer</h4>
+        <p>Approved signals from partner skids land in one place. Your team in Sweden sees the same KPIs the site team sees — with role-based access so third-party pilot data stays isolated from core process IP.</p>
+        <ul class="clean check" style="margin-top:12px">
+          <li><b>Continuous visibility</b> for remote commissioning support</li>
+          <li><b>Guarantee KPI tracking</b> across commercial deployments</li>
+          <li><b>Multi-year OPEX optimization</b> after launch</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="jstep" style="margin-top:40px">
+      <div class="jcopy">
+        <h4>Client delivery portal for pilots &amp; packages</h4>
+        <p>Third-party pilot customers get a secure window into progress and engineering handoffs — without opening your internal OT network or patent datasets.</p>
+        <p>Package downloads, status, and approved telemetry summaries live behind authenticated access with clear separation from Refinyx core systems.</p>
+      </div>
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">portal.refinyx.eu / clients / nordic-metals</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-main">
+              <div class="portal-hero">
+                <h6>Nordic Metals · Pilot campaign</h6>
+                <p>Week 3 of 6 · Black mass validation · Shared with client engineers</p>
+              </div>
+              <div class="file-row">
+                <div class="file-ico">PDF</div>
+                <div style="flex:1"><b>Engineering package v0.9</b><br><small style="color:var(--muted)">Updated yesterday · 24 MB</small></div>
+                <span class="tag">Ready</span>
+              </div>
+              <div class="file-row">
+                <div class="file-ico">CSV</div>
+                <div style="flex:1"><b>Approved KPI summary</b><br><small style="color:var(--muted)">Recovery · impurity · uptime</small></div>
+                <span class="tag green">Live</span>
+              </div>
+              <div class="file-row">
+                <div class="file-ico">DOC</div>
+                <div style="flex:1"><b>Commissioning checklist</b><br><small style="color:var(--muted)">Shared with site team</small></div>
+                <span class="tag gold">In review</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative client portal — third-party visibility without cross-client data bleed.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap">
+    <div class="kicker">Trust foundations</div>
+    <h2>IP ownership, security &amp; EU data sovereignty</h2>
+    <p class="lede">Software that sits on your plants only works if ownership and tenancy are unambiguous from day one.</p>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">100% Refinyx ownership</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">All custom code, data pipelines, and analytical models belong exclusively to Refinyx.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Sovereign deployment</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Systems run inside Refinyx’s own EU cloud tenant (VPC) or on-premise — zero external data retention, zero cross-client model training.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Strict data isolation</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Role-based access separating third-party pilot client data from Refinyx’s core patent and process datasets.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:18px">
+      <b>Design principle.</b> We sit on top of existing plant controls. We do not become a second SCADA vendor, and we do not train shared models on your process IP.
+    </div>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <div class="kicker">Engagement</div>
+    <h2>Proposed roadmap</h2>
+    <p class="lede">Start with one high-leverage bottleneck. Harden for production. Then scale as a flexible tech arm beside your chemical engineering hiring.</p>
+
+    <div class="tablewrap" style="margin-top:22px">
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Timeline</th>
+            <th>Scope &amp; objective</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>Phase 1: Targeted MVP Sprint</b></td>
+            <td><span class="tag">Weeks 1–6</span></td>
+            <td>Fixed-scope pilot addressing one immediate priority — either a Loophouse SCADA-to-QC automated pipeline or a remote skid telemetry connector.</td>
+          </tr>
+          <tr>
+            <td><b>Phase 2: Production Hardening</b></td>
+            <td><span class="tag gold">Months 2–4</span></td>
+            <td>Security hardening, automated anomaly / OPEX alerting, and standardized telemetry templates for incoming US, EU, and Indian plants.</td>
+          </tr>
+          <tr>
+            <td><b>Phase 3: On-Demand Tech Arm</b></td>
+            <td><span class="tag green">Ongoing</span></td>
+            <td>Flexible dedicated engineering pod scaling alongside Refinyx’s commercial deployments, keeping internal hiring focused on chemical engineers.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="timeline" style="margin-top:28px">
+      <div class="tl-item">
+        <div class="tl-time">Weeks 1–6</div>
+        <div class="tl-body">
+          <h5>Phase 1 · Pick one bottleneck and ship it</h5>
+          <p>Loophouse SCADA↔QC pipeline <i>or</i> remote skid connector. Clear success metrics. Visible value before expanding scope.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Months 2–4</div>
+        <div class="tl-body">
+          <h5>Phase 2 · Make it plant-ready</h5>
+          <p>Hardening, anomaly / OPEX alerts, and reusable telemetry templates so the next continent does not reinvent integration.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Ongoing</div>
+        <div class="tl-body">
+          <h5>Phase 3 · Dedicated pod on demand</h5>
+          <p>Scale engineering capacity with commercial deployments while Refinyx hiring stays centered on chemistry and plant delivery.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>What Phase 1 can include</h3>
+    <div class="pillrow">
+      <span class="pill in">One priority track chosen with you</span>
+      <span class="pill in">OT protocol connectors</span>
+      <span class="pill in">Secure EU / on-prem deploy</span>
+      <span class="pill in">Role-based access</span>
+      <span class="pill in">Campaign or fleet MVP UI</span>
+      <span class="pill in">Success metrics agreed upfront</span>
+      <span class="pill out">Full multi-plant MES</span>
+      <span class="pill out">Replacing PLC / SCADA</span>
+    </div>
+  </div>
+</section>
+
+<section id="why-brio">
+  <div class="wrap">
+    <div class="kicker">Why SoftwareBrio</div>
+    <h2>Built for industrial rigor, aligned to your map</h2>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">Engineering rigor</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Founded by ex-Google engineering leaders with proven delivery across Industrial IoT, manufacturing analytics, cloud architecture, and process automation.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Geographic alignment</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Operations across the US and India (Indore &amp; Bengaluru) — responsive execution aligned with two of Refinyx’s priority expansion markets.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Pragmatic execution</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Software built around real chemical-plant workflows, OT protocols, and strict industrial uptime requirements.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="kicker">Discussion</div>
+    <h2>Next steps</h2>
+    <p class="lede">Three concrete conversations to lock Phase 1 before any build starts.</p>
+    <ol class="steps">
+      <li><b>Identify the highest-leverage Phase 1 bottleneck</b> between Loophouse pilot / QC data flow and remote customer-plant telemetry.</li>
+      <li><b>Review existing SCADA / LIMS architecture</b> and security / on-prem requirements with your engineering lead.</li>
+      <li><b>Align on scope and success metrics</b> for a 6-week Phase 1 sprint.</li>
+    </ol>
+    <div class="callout warn" style="margin-top:18px">
+      <b>Ready when you are.</b> Once we pick Track A or Track B for Phase 1, we can draft the fixed-scope sprint plan, interfaces, and acceptance criteria in a follow-up note.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>SoftwareBrio × Refinyx</b> — Technical Partnership Proposal: Digital Infrastructure for Pilot Velocity &amp; Global Plant Optimization.<br>
+    Prepared for Dr. Mahmood Alemrajabi · November 2026 · Phase 1 · Weeks 1–6 · Dedicated software, IIoT &amp; data engineering partner.
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftwareBrio × Edvi Law — Cross-Border Tech Execution &amp; Legal Alignment</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#141820;
+    --ink-soft:#3d4656;
+    --muted:#6b7384;
+    --line:#d8dde6;
+    --bg:#f4f5f8;
+    --card:#ffffff;
+    --brand:#1f3a5f;
+    --brand-deep:#14273f;
+    --brand-soft:#e8eef6;
+    --accent:#a16207;
+    --accent-soft:#fef6e7;
+    --signal:#157a45;
+    --signal-soft:#e6f5ec;
+    --india:#0f5c4c;
+    --israel:#1f4b7a;
+    --us:#4a5568;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(20,24,32,.05), 0 10px 28px rgba(20,24,32,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line);scroll-margin-top:68px}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:-.01em;white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--muted);font-weight:500}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:
+      radial-gradient(ellipse 55% 50% at 88% 18%, rgba(161,98,7,.16), transparent 55%),
+      radial-gradient(ellipse 50% 45% at 12% 85%, rgba(31,58,95,.35), transparent 50%),
+      linear-gradient(155deg,#0c121c 0%,#152238 48%,#1c314d 100%);
+    color:#fff;padding:76px 0 68px;border:none;position:relative;overflow:hidden;
+  }
+  .cover::before{
+    content:"";position:absolute;inset:0;opacity:.14;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:linear-gradient(180deg,#000 18%,transparent 88%);
+  }
+  .cover .wrap{position:relative}
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(26px,4vw,42px);line-height:1.14;margin:0 0 16px;
+    letter-spacing:-.03em;font-weight:700;max-width:16ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.88);max-width:56ch;margin:0 0 18px;line-height:1.55}
+  .cover .byline{display:flex;flex-direction:column;gap:6px;margin:0 0 34px;max-width:64ch}
+  .cover .byline p{margin:0;font-size:14px;color:rgba(255,255,255,.78);line-height:1.45}
+  .cover .byline strong{color:#fff;font-weight:600}
+  .cover .byline .event{font-size:12.5px;color:rgba(255,255,255,.58);letter-spacing:.02em}
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:11px 16px;border-radius:10px;min-width:150px;backdrop-filter:blur(8px);
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;
+    letter-spacing:-.022em;font-weight:700;
+  }
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650;font-family:"Space Grotesk",sans-serif}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media screen and (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{
+    display:block;font-family:"Space Grotesk",sans-serif;font-size:24px;line-height:1.15;
+    letter-spacing:-.03em;color:var(--brand);font-weight:700;
+  }
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#c5d2e4;background:linear-gradient(180deg,#f3f6fb 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#ecd9a8;background:linear-gradient(180deg,#fffaf0 0%,#fff 55%)}
+  .sys-block.green{border-color:#b9dcc9;background:linear-gradient(180deg,#f2faf5 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--brand);background:var(--brand-soft)}
+  .sys-block.stretch .slabel{color:var(--accent);background:var(--accent-soft)}
+  .sys-block.green .slabel{color:var(--signal);background:var(--signal-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:17px}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--signal);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--signal-soft);border:1px solid #b9dcc9;border-left:3px solid var(--signal);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#14532d;
+  }
+  .callout b{color:#0f3d22}
+  .callout.warn{background:var(--accent-soft);border-color:#ecd9a8;border-left-color:var(--accent);color:#7a4f0a}
+  .callout.warn b{color:#5c3b08}
+  .callout.soft{background:var(--brand-soft);border-color:#c5d2e4;border-left-color:var(--brand);color:#1a3050}
+  .callout.soft b{color:#14273f}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+  .pill.in{background:var(--brand-soft);border-color:#c5d2e4;color:var(--brand)}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  @media screen and (max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .map3{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center;margin-top:22px;
+  }
+  @media screen and (max-width:760px){
+    .map3{grid-template-columns:1fr;gap:10px}
+    .map3 .arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .node{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 16px;text-align:center;box-shadow:var(--shadow);
+  }
+  .node .flag{
+    display:inline-block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:4px 9px;border-radius:99px;margin-bottom:10px;
+  }
+  .node.il .flag{background:#e8eef6;color:var(--israel)}
+  .node.in .flag{background:#e6f5f0;color:var(--india)}
+  .node.us .flag{background:#eef0f3;color:var(--us)}
+  .node h5{margin:0 0 4px;font-size:15px;font-weight:700;font-family:"Space Grotesk",sans-serif}
+  .node p{margin:0;font-size:12.5px;color:var(--muted)}
+  .map3 .arrow{color:var(--muted);font-weight:700;font-size:18px}
+
+  .desk{
+    background:#dde3eb;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f4f6f9;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f6f8fb;
+    font-size:12px;font-weight:650;color:var(--muted);flex-wrap:wrap;
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+
+  .arch-box{
+    border:1px solid var(--line);border-radius:12px;padding:14px;background:#f6f8fb;margin-bottom:10px;
+  }
+  .arch-box.safe{border-color:#b9dcc9;background:linear-gradient(180deg,#f2faf5,#fff)}
+  .arch-box.public{border-color:#ecd9a8;background:linear-gradient(180deg,#fffaf0,#fff);opacity:.92}
+  .arch-box h6{margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .arch-box p{margin:0;font-size:13px;color:var(--ink-soft)}
+  .arch-box .tag{
+    display:inline-block;margin-top:8px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;
+  }
+  .arch-box.safe .tag{background:var(--signal-soft);color:var(--signal)}
+  .arch-box.public .tag{background:var(--accent-soft);color:var(--accent)}
+
+  .checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media screen and (max-width:560px){.checkgrid{grid-template-columns:1fr}}
+  .checkitem{
+    display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:10px;
+    padding:10px 12px;font-size:12.5px;background:#fff;
+  }
+  .checkitem .box{
+    width:16px;height:16px;border-radius:4px;border:1.5px solid var(--brand);flex-shrink:0;margin-top:1px;
+    display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:var(--brand);
+  }
+  .checkitem.on .box{background:var(--brand);color:#fff}
+  .checkitem b{display:block;font-size:12.5px}
+  .checkitem small{color:var(--muted)}
+
+  .flow2{
+    display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px;
+  }
+  @media screen and (max-width:860px){.flow2{grid-template-columns:1fr}}
+  .flow-card{
+    border:1px solid var(--line);border-radius:16px;padding:22px;background:#fff;box-shadow:var(--shadow);
+    position:relative;
+  }
+  .flow-card .dir{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;display:inline-block;margin-bottom:12px;
+  }
+  .flow-card.to-edvi .dir{background:var(--accent-soft);color:var(--accent)}
+  .flow-card.to-brio .dir{background:var(--brand-soft);color:var(--brand)}
+  .flow-card h3{margin:0 0 8px;font-size:17px;font-family:"Space Grotesk",sans-serif}
+  .flow-card p{margin:0;font-size:13.8px;color:var(--ink-soft)}
+
+  .steps{counter-reset:ns;margin:18px 0 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:ns;position:relative;padding:16px 16px 16px 58px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(ns);position:absolute;left:16px;top:16px;
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .steps li b{color:var(--ink)}
+
+  .trust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
+  @media screen and (max-width:760px){.trust-row{grid-template-columns:1fr}}
+  .trust-step{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:var(--shadow);
+    position:relative;
+  }
+  .trust-step .n{
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;margin-bottom:10px;
+  }
+  .trust-step h5{margin:0 0 6px;font-size:14px;font-weight:700}
+  .trust-step p{margin:0;font-size:13px;color:var(--ink-soft)}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+
+  @page{size:Letter;margin:0.4in 0.45in}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{background:#fff !important}
+    .topbar{display:none !important}
+    .wrap{max-width:none !important;width:100% !important;padding:0 !important}
+    section{padding:18px 0 !important;break-inside:auto;page-break-inside:auto;scroll-margin-top:0}
+    .cover{
+      background:linear-gradient(155deg,#0c121c 0%,#152238 48%,#1c314d 100%) !important;
+      padding:28px 22px 24px !important;margin:0 0 8px !important;border-radius:14px;overflow:visible !important;
+    }
+    .cover h1{font-size:24px !important}
+    .cover .sub{font-size:13px !important;margin-bottom:12px !important}
+    .cover .byline{margin-bottom:22px !important}
+    .cover .byline p{font-size:12.5px !important}
+    h2,h3,h4,.kicker{break-after:avoid;page-break-after:avoid}
+    h2{font-size:20px !important}
+    .lede{font-size:13px !important}
+    .grid.g2{grid-template-columns:repeat(2,1fr) !important}
+    .grid.g3{grid-template-columns:repeat(3,1fr) !important}
+    .grid.g4{grid-template-columns:repeat(4,1fr) !important}
+    .map3{grid-template-columns:1fr auto 1fr auto 1fr !important}
+    .map3 .arrow{transform:none !important}
+    .flow2{grid-template-columns:1fr 1fr !important}
+    .trust-row{grid-template-columns:repeat(3,1fr) !important}
+    .checkgrid{grid-template-columns:1fr 1fr !important}
+    .jstep,.jstep.reverse{grid-template-columns:1fr !important;gap:14px !important}
+    .jcopy,.desk,.sys-block,.card,.stat,.callout,.steps li,.node,.flow-card,.trust-step{
+      break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;
+    }
+    footer{padding:18px 0 8px !important}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">SoftwareBrio <span>× Edvi Law</span></div>
+    <nav>
+      <a href="#context">Context</a>
+      <a href="#support">Support</a>
+      <a href="#trust">Trust</a>
+      <a href="#alignment">Alignment</a>
+      <a href="#next">Next steps</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Partnership overview</div>
+    <h1>Cross-Border Tech Execution &amp; Legal Alignment</h1>
+    <p class="sub">Sound commercial / IP structuring meets reliable engineering execution — a trust-first way to support founders across Israel, India, and the US.</p>
+    <div class="byline">
+      <p>Prepared for <strong>Hadar Edvi</strong>, Founder, Edvi Law Firm<br>
+      Shared by Parag Goyal, SoftwareBrio</p>
+      <p class="event">Bengaluru Tech Summit · 18 November 2026</p>
+    </div>
+    <div class="meta">
+      <div><span>Corridors</span><b>Israel · India · US</b></div>
+      <div><span>Edvi</span><b>Licensing · privacy · deals</b></div>
+      <div><span>SoftwareBrio</span><b>AI · SaaS · data platforms</b></div>
+      <div><span>Principle</span><b>Proof before referrals</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="context">
+  <div class="wrap">
+    <div class="kicker">Shared context</div>
+    <h2>Two things cross-border tech companies need to move smoothly</h2>
+    <p class="lede">Sound commercial / IP structuring and reliable engineering execution. Edvi Law Firm guides hi-tech and SaaS businesses through software licensing, data privacy, cybersecurity, and cross-border deals. SoftwareBrio builds production AI solutions, custom software, and scalable data platforms.</p>
+
+    <div class="map3">
+      <div class="node il">
+        <div class="flag">Israel</div>
+        <h5>Legal &amp; commercial</h5>
+        <p>Licensing · privacy · deals · fractional counsel</p>
+      </div>
+      <div class="arrow">↔</div>
+      <div class="node in">
+        <div class="flag">India</div>
+        <h5>Engineering capacity</h5>
+        <p>Bengaluru senior delivery · SaaS · AI · data</p>
+      </div>
+      <div class="arrow">↔</div>
+      <div class="node us">
+        <div class="flag">US</div>
+        <h5>Growth &amp; markets</h5>
+        <p>Startups · mid-market · cross-border JVs</p>
+      </div>
+    </div>
+    <p class="mockcap">This brief outlines a simple, trust-first way our teams can support cross-border tech founders.</p>
+
+    <div class="grid g3" style="margin-top:26px">
+      <div class="stat"><b>Legal</b><span>Edvi — licensing, privacy, cyber, deals</span></div>
+      <div class="stat"><b>Build</b><span>SoftwareBrio — AI, SaaS, data platforms</span></div>
+      <div class="stat"><b>Trust</b><span>Vetted first — never blind referrals</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="support">
+  <div class="wrap">
+    <div class="kicker">Where we help your clients</div>
+    <h2>Engineering that sits cleanly behind your counsel</h2>
+    <p class="lede">When you advise on data protection, IP boundaries, or AI risk — we build the compliant systems. When you support founders as fractional counsel — we bring senior Bengaluru capacity to ship.</p>
+
+    <div class="grid g3" style="margin-top:18px">
+      <div class="sys-block lock">
+        <div class="slabel">1 · Privacy-first AI</div>
+        <h3>Compliant data &amp; model architecture</h3>
+        <p class="sdesc">Isolated / private LLM workflows (proprietary data stays out of public models), secure APIs, and structured data pipelines — engineered to match the advice you give.</p>
+        <div class="sys-pipes">
+          <span>Private LLM</span>
+          <span>Secure APIs</span>
+          <span>Data pipelines</span>
+          <span>IP boundaries</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">2 · SaaS scaling in India</div>
+        <h3>Senior build capacity in Bengaluru</h3>
+        <p class="sdesc">For Israeli or international startups you support as fractional counsel — MVPs, legacy modernization, or scaling custom SaaS platforms.</p>
+        <div class="sys-pipes">
+          <span>MVP build</span>
+          <span>Legacy modernization</span>
+          <span>Custom SaaS</span>
+        </div>
+      </div>
+      <div class="sys-block green">
+        <div class="slabel">3 · Pre-deal assessments</div>
+        <h3>Technical gut-check beside your review</h3>
+        <p class="sdesc">Alongside commercial and legal reviews prior to JVs, tech licensing, or major launches — codebase health, cloud scalability, data architecture, security isolation.</p>
+        <div class="sys-pipes">
+          <span>Codebase health</span>
+          <span>Cloud scale</span>
+          <span>Security isolation</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="jstep" style="margin-top:36px">
+      <div class="jcopy">
+        <h4>Privacy-first AI that matches the advice on the memo</h4>
+        <p>When counsel draws a line between proprietary data and public models, the architecture should enforce it — not hope the team remembers.</p>
+        <div class="callout soft" style="margin-top:14px">
+          <b>Design principle.</b> Isolated LLM workflows, secure APIs, and structured pipelines so data protection and IP boundaries are engineered, not just documented.
+        </div>
+      </div>
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">architecture · privacy-first LLM boundary</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-main">
+              <div class="arch-box safe">
+                <h6>Client private zone</h6>
+                <p>Proprietary docs · customer data · fine-tuned / private LLM · audit logs</p>
+                <span class="tag">Stays inside tenant</span>
+              </div>
+              <div class="arch-box safe">
+                <h6>Secure API layer</h6>
+                <p>Auth · policy checks · redaction · structured pipelines</p>
+                <span class="tag">Enforced boundary</span>
+              </div>
+              <div class="arch-box public">
+                <h6>Public model surface</h6>
+                <p>Only non-sensitive / approved prompts — no raw proprietary corpus</p>
+                <span class="tag">No client IP training</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative privacy-first layout — legal advice expressed as system design.</p>
+      </div>
+    </div>
+
+    <div class="jstep reverse" style="margin-top:40px">
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">pre-deal · technical assessment checklist</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Assessment</span>
+              <span>Codebase</span>
+              <span>Cloud</span>
+              <span>Data</span>
+              <span>Security</span>
+            </div>
+            <div class="desk-main">
+              <div class="checkgrid">
+                <div class="checkitem on"><div class="box">✓</div><div><b>Codebase health</b><small>Debt · tests · ownership</small></div></div>
+                <div class="checkitem on"><div class="box">✓</div><div><b>Cloud scalability</b><small>Cost · multi-tenant ready</small></div></div>
+                <div class="checkitem on"><div class="box">✓</div><div><b>Data architecture</b><small>Pipelines · residency</small></div></div>
+                <div class="checkitem"><div class="box"></div><div><b>Security isolation</b><small>Tenancy · secrets · AI</small></div></div>
+              </div>
+              <div class="callout warn" style="margin-top:12px;margin-bottom:0">
+                <b>Alongside your review.</b> Practical findings for JVs, licensing, or launch — not a replacement for counsel.
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Pre-deal technical assessment — sits next to commercial / legal diligence.</p>
+      </div>
+      <div class="jcopy">
+        <h4>Technical assessments that respect your lane</h4>
+        <p>You own the commercial and legal review. Our seniors add codebase, cloud, data, and security isolation notes so founders and counterparties see the engineering risk clearly.</p>
+        <ul class="clean check" style="margin-top:12px">
+          <li><b>JVs &amp; tech licensing</b> — what is actually shippable</li>
+          <li><b>Major launches</b> — scale and isolation gaps</li>
+          <li><b>Senior-led</b> — no junior-only diligence theater</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trust">
+  <div class="wrap">
+    <div class="kicker">Proof before referrals</div>
+    <h2>We earn trust the way lawyers must — before intros</h2>
+    <p class="lede">A lawyer’s reputation depends on the partners they recommend. We never expect blind referrals.</p>
+
+    <div class="trust-row">
+      <div class="trust-step">
+        <div class="n">1</div>
+        <h5>Senior-led delivery</h5>
+        <p>US- and India-aligned teams focused on production AI, data platforms, and custom cloud / SaaS — senior execution without enterprise overhead.</p>
+      </div>
+      <div class="trust-step">
+        <div class="n">2</div>
+        <h5>Vetted first</h5>
+        <p>Before you introduce a client, we walk you through AI / SaaS case studies, architecture examples, and references.</p>
+      </div>
+      <div class="trust-step">
+        <div class="n">3</div>
+        <h5>No-obligation sounding board</h5>
+        <p>If a client has a tricky AI, data, or product-scaling question, we jump on a complimentary 30-minute technical gut-check — value first.</p>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <b>Order of operations.</b> Case studies and a live gut-check come before any client introduction. Referrals only after you are comfortable with the work.
+    </div>
+  </div>
+</section>
+
+<section id="alignment">
+  <div class="wrap">
+    <div class="kicker">Realistic cross-border alignment</div>
+    <h2>Two-way intros — when each side is the right fit</h2>
+    <p class="lede">Clear lanes. Reciprocal referrals. No pressure to force a match that does not serve the founder.</p>
+
+    <div class="flow2">
+      <div class="flow-card to-edvi">
+        <div class="dir">SoftwareBrio → Edvi Law</div>
+        <h3>Our clients need Israeli counsel</h3>
+        <p>Whenever SoftwareBrio’s US or Indian tech clients evaluate Israeli partnerships, license Israeli technology, or need cross-border SaaS / IP structuring in Israel or East Asia — you are our direct referral.</p>
+        <div class="pillrow">
+          <span class="pill in">Israeli partnerships</span>
+          <span class="pill in">Tech licensing</span>
+          <span class="pill in">SaaS / IP structuring</span>
+        </div>
+      </div>
+      <div class="flow-card to-brio">
+        <div class="dir">Edvi Law → SoftwareBrio</div>
+        <h3>Your clients need Bengaluru build</h3>
+        <p>Once you’ve vetted our engineering work, whenever your Israeli or international clients look for a reliable AI, data, or software build partner in Bengaluru — you have a proven team on speed dial.</p>
+        <div class="pillrow">
+          <span class="pill in">AI / data builds</span>
+          <span class="pill in">SaaS scaling</span>
+          <span class="pill in">Senior India capacity</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="kicker">Simple next steps</div>
+    <h2>Stay useful, stay aligned</h2>
+    <ol class="steps">
+      <li><b>This week</b> — I’ll send 1–2 concise SoftwareBrio AI / SaaS case studies so you can see our technical work firsthand.</li>
+      <li><b>Stay aligned</b> — let us know what types of Israel–India tech partnerships or startup profiles you’re prioritizing over the next 6 months so we can keep an eye out for relevant intros.</li>
+    </ol>
+    <div class="callout warn" style="margin-top:18px">
+      <b>No blind intros either way.</b> We share proof, you share priorities — then we introduce only when both sides are a clear fit for the founder.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>SoftwareBrio × Edvi Law Firm</b> — Cross-Border Tech Execution &amp; Legal Alignment Overview.<br>
+    Prepared for Hadar Edvi · Shared by Parag Goyal · Bengaluru Tech Summit · 18 November 2026 · Israel · India · US.
+  </div>
+</footer>
+
+</body>
+</html>

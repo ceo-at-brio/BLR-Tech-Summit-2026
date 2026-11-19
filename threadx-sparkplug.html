@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftwareBrio × Eclipse — ThreadX &amp; Sparkplug to Cloud AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12161c;
+    --ink-soft:#3c4654;
+    --muted:#6a7484;
+    --line:#d6dde6;
+    --bg:#f3f5f8;
+    --card:#ffffff;
+    --brand:#0e5c66;
+    --brand-deep:#083940;
+    --brand-soft:#e3f2f4;
+    --accent:#d97706;
+    --accent-soft:#fff7ed;
+    --signal:#15803d;
+    --signal-soft:#e8f6ee;
+    --edge:#1e3a5f;
+    --edge-soft:#e8eef6;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(18,22,28,.05), 0 10px 28px rgba(18,22,28,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line);scroll-margin-top:68px}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:-.01em;white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--muted);font-weight:500}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:
+      radial-gradient(ellipse 60% 50% at 90% 20%, rgba(217,119,6,.18), transparent 55%),
+      radial-gradient(ellipse 50% 45% at 10% 80%, rgba(14,92,102,.3), transparent 50%),
+      linear-gradient(155deg,#0a1418 0%,#0f2a30 48%,#143840 100%);
+    color:#fff;padding:76px 0 68px;border:none;position:relative;overflow:hidden;
+  }
+  .cover::before{
+    content:"";position:absolute;inset:0;opacity:.15;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size:40px 40px;
+    mask-image:linear-gradient(180deg,#000 18%,transparent 88%);
+  }
+  .cover .wrap{position:relative}
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(26px,4vw,42px);line-height:1.14;margin:0 0 16px;
+    letter-spacing:-.03em;font-weight:700;max-width:18ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.88);max-width:58ch;margin:0 0 18px;line-height:1.55}
+  .cover .byline{display:flex;flex-direction:column;gap:6px;margin:0 0 34px;max-width:64ch}
+  .cover .byline p{margin:0;font-size:14px;color:rgba(255,255,255,.78);line-height:1.45}
+  .cover .byline strong{color:#fff;font-weight:600}
+  .cover .byline .event{font-size:12.5px;color:rgba(255,255,255,.58);letter-spacing:.02em}
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:11px 16px;border-radius:10px;min-width:150px;backdrop-filter:blur(8px);
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;
+    letter-spacing:-.022em;font-weight:700;
+  }
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650;font-family:"Space Grotesk",sans-serif}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media screen and (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{
+    display:block;font-family:"Space Grotesk",sans-serif;font-size:26px;line-height:1.1;
+    letter-spacing:-.03em;color:var(--brand);font-weight:700;
+  }
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#b8dce0;background:linear-gradient(180deg,#f1fafb 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#f0d4a8;background:linear-gradient(180deg,#fffaf0 0%,#fff 55%)}
+  .sys-block.edge{border-color:#c5d2e4;background:linear-gradient(180deg,#f3f6fb 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--brand);background:var(--brand-soft)}
+  .sys-block.stretch .slabel{color:#b45309;background:var(--accent-soft)}
+  .sys-block.edge .slabel{color:var(--edge);background:var(--edge-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:17px}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--signal);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--signal-soft);border:1px solid #b9e0c8;border-left:3px solid var(--signal);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#14532d;
+  }
+  .callout b{color:#0f3d22}
+  .callout.warn{background:var(--accent-soft);border-color:#f0d4a8;border-left-color:var(--accent);color:#9a3412}
+  .callout.warn b{color:#7c2d12}
+  .callout.soft{background:var(--brand-soft);border-color:#b8dce0;border-left-color:var(--brand);color:#0a454c}
+  .callout.soft b{color:#083940}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+  .pill.in{background:var(--brand-soft);border-color:#b8dce0;color:var(--brand)}
+  .pill.out{background:#f7f8fa;color:var(--muted);text-decoration:line-through;opacity:.75}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  @media screen and (max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .arch{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:stretch;margin-top:22px;
+  }
+  @media screen and (max-width:860px){
+    .arch{grid-template-columns:1fr;gap:10px}
+    .arch .arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .arch-col{
+    background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow);
+  }
+  .arch-col.edge{border-color:#c5d2e4;background:linear-gradient(180deg,#f3f6fb,#fff)}
+  .arch-col.msg{border-color:#f0d4a8;background:linear-gradient(180deg,#fffaf0,#fff)}
+  .arch-col.cloud{border-color:#b8dce0;background:linear-gradient(180deg,#f1fafb,#fff)}
+  .arch-col .lbl{
+    font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    color:var(--muted);margin-bottom:8px;
+  }
+  .arch-col h5{margin:0 0 8px;font-size:14px;font-weight:700;font-family:"Space Grotesk",sans-serif}
+  .arch-col ul{margin:0;padding:0;list-style:none}
+  .arch-col li{font-size:12.5px;color:var(--ink-soft);padding:5px 0;border-top:1px dashed var(--line)}
+  .arch-col li:first-child{border-top:none}
+  .arch .arrow{color:var(--muted);font-weight:700;font-size:20px;align-self:center}
+
+  .desk{
+    background:#dce4ea;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f4f7f9;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f6f9fb;
+    font-size:12px;font-weight:650;color:var(--muted);flex-wrap:wrap;
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media screen and (max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+  .kpi{
+    background:#f6f9fb;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  }
+  .kpi .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .v{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+  .kpi .d{font-size:11px;color:var(--signal);font-weight:600;margin-top:2px}
+  .kpi .d.down{color:#b45309}
+  .kpi .d.warn{color:var(--accent)}
+
+  .chart{
+    height:110px;border:1px solid var(--line);border-radius:10px;background:
+      linear-gradient(180deg,rgba(14,92,102,.06),transparent 70%),#fafcfd;
+    position:relative;overflow:hidden;margin-bottom:12px;
+  }
+  .chart svg{width:100%;height:100%;display:block}
+  .series-lbl{
+    position:absolute;top:8px;left:10px;font-size:11px;font-weight:700;color:var(--ink-soft);
+  }
+
+  .topic{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+    font-size:11.5px;background:#0f1a1e;color:#c8e6ea;border-radius:12px;padding:14px;line-height:1.55;
+  }
+  .topic .ok{color:#6ee7a8}
+  .topic .key{color:#fbbf24}
+  .topic .dim{opacity:.55}
+
+  .device-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+  @media screen and (max-width:560px){.device-row{grid-template-columns:1fr}}
+  .device{
+    border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:#fff;font-size:12.5px;
+  }
+  .device b{display:block;font-size:12.5px}
+  .device small{color:var(--muted)}
+  .device .st{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:4px;color:var(--signal)}
+  .device .st.warn{color:var(--accent)}
+
+  .alert{
+    display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;font-size:12.5px;background:#fff;margin-bottom:8px;
+  }
+  .alert:last-child{margin-bottom:0}
+  .alert .badge{
+    font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 7px;border-radius:6px;background:var(--accent-soft);color:#b45309;white-space:nowrap;
+  }
+  .alert .badge.ok{background:var(--signal-soft);color:var(--signal)}
+  .alert b{display:block;font-size:12.5px}
+  .alert small{color:var(--muted)}
+
+  .timeline{position:relative;margin:22px 0 0}
+  .tl-item{display:grid;grid-template-columns:118px 1fr;gap:18px;position:relative;padding-bottom:22px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{
+    content:"";position:absolute;left:118px;top:26px;bottom:-2px;width:2px;
+    background:var(--line);transform:translateX(-1px);
+  }
+  .tl-item:last-child::before{display:none}
+  .tl-time{
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;
+    color:var(--brand);padding-top:2px;
+  }
+  .tl-body{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;box-shadow:var(--shadow)}
+  .tl-body h5{margin:0 0 5px;font-size:14px;font-weight:650}
+  .tl-body p{margin:0;font-size:13.4px;color:var(--ink-soft)}
+  @media screen and (max-width:620px){
+    .tl-item{grid-template-columns:1fr;gap:8px}
+    .tl-item::before{display:none}
+    .tl-time{text-align:left}
+  }
+
+  .steps{counter-reset:ns;margin:18px 0 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:ns;position:relative;padding:16px 16px 16px 58px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(ns);position:absolute;left:16px;top:16px;
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .steps li b{color:var(--ink)}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+  .tag{
+    display:inline-block;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:6px;
+    background:var(--brand-soft);color:var(--brand);white-space:nowrap;
+  }
+  .tag.gold{background:var(--accent-soft);color:#b45309}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+
+  @page{size:Letter;margin:0.4in 0.45in}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{background:#fff !important}
+    .topbar{display:none !important}
+    .wrap{max-width:none !important;width:100% !important;padding:0 !important}
+    section{padding:18px 0 !important;break-inside:auto;page-break-inside:auto;scroll-margin-top:0}
+    .cover{
+      background:linear-gradient(155deg,#0a1418 0%,#0f2a30 48%,#143840 100%) !important;
+      padding:28px 22px 24px !important;margin:0 0 8px !important;border-radius:14px;overflow:visible !important;
+    }
+    .cover h1{font-size:24px !important}
+    .cover .sub{font-size:13px !important;margin-bottom:12px !important}
+    .cover .byline{margin-bottom:22px !important}
+    .cover .byline p{font-size:12.5px !important}
+    h2,h3,h4,.kicker{break-after:avoid;page-break-after:avoid}
+    h2{font-size:20px !important}
+    .lede{font-size:13px !important}
+    .grid.g2{grid-template-columns:repeat(2,1fr) !important}
+    .grid.g3{grid-template-columns:repeat(3,1fr) !important}
+    .grid.g4{grid-template-columns:repeat(4,1fr) !important}
+    .arch{grid-template-columns:1fr auto 1fr auto 1fr !important}
+    .arch .arrow{transform:none !important}
+    .kpi-row{grid-template-columns:repeat(4,1fr) !important}
+    .device-row{grid-template-columns:repeat(3,1fr) !important}
+    .tl-item{grid-template-columns:100px 1fr !important}
+    .jstep,.jstep.reverse{grid-template-columns:1fr !important;gap:14px !important}
+    .jcopy,.desk,.sys-block,.card,.stat,.callout,.steps li,.arch,.tl-body,.topic{
+      break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;
+    }
+    footer{padding:18px 0 8px !important}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">SoftwareBrio <span>× Eclipse</span></div>
+    <nav>
+      <a href="#vision">Vision</a>
+      <a href="#lanes">Lanes</a>
+      <a href="#phases">Phases</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#demo">Demo</a>
+      <a href="#next">Next steps</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Community-first technical collaboration</div>
+    <h1>Connecting Open-Source Edge Systems to Production Cloud AI</h1>
+    <p class="sub">ThreadX &amp; Sparkplug telemetry into scalable cloud pipelines, MLOps, and predictive AI — without overlapping Eclipse’s embedded core.</p>
+    <div class="byline">
+      <p>Prepared for <strong>Frédéric Desbiens</strong>, Senior Manager (Embedded Systems, IoT, Open Hardware) &amp; Project Lead (Eclipse ThreadX), Eclipse Foundation<br>
+      by Parag Goyal, Chief Technologist, SoftwareBrio</p>
+      <p class="event">Bengaluru Tech Summit · 18 November 2026</p>
+    </div>
+    <div class="meta">
+      <div><span>Phase 1</span><b>2–3 week reference blueprint</b></div>
+      <div><span>Edge</span><b>ThreadX · Sparkplug</b></div>
+      <div><span>Cloud</span><b>Ingest · MLOps · dashboards</b></div>
+      <div><span>Alignment</span><b>Vendor-neutral · community-first</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="vision">
+  <div class="wrap">
+    <div class="kicker">Shared vision</div>
+    <h2>Trusted edge building blocks — then the hard step above the device</h2>
+    <p class="lede">The Eclipse Foundation provides vendor-neutral building blocks for edge and embedded innovation — including Eclipse ThreadX, ZoneX, Eclipse IoT / Sparkplug, and OpenHW (RISC-V) — with strong traction across automotive, medical, and industrial systems.</p>
+    <p class="lede">Industrial and enterprise teams adopting these technologies often struggle with the next step: turning deterministic edge telemetry into scalable cloud data pipelines, MLOps workflows, computer vision, and predictive AI applications.</p>
+
+    <div class="grid g4" style="margin-top:26px">
+      <div class="stat"><b>ThreadX</b><span>Deterministic RTOS at the edge</span></div>
+      <div class="stat"><b>Sparkplug</b><span>Industrial MQTT payload standard</span></div>
+      <div class="stat"><b>2–3 wks</b><span>Phase 1 open reference blueprint</span></div>
+      <div class="stat"><b>100%</b><span>Aligned with Eclipse governance</span></div>
+    </div>
+
+    <div class="callout soft" style="margin-top:18px">
+      <b>Community-first.</b> SoftwareBrio proposes a collaboration that demonstrates and simplifies the Edge-to-Cloud AI journey — contributing practical value to the Eclipse ecosystem while staying vendor-neutral.
+    </div>
+  </div>
+</section>
+
+<section id="lanes">
+  <div class="wrap">
+    <div class="kicker">Division of expertise</div>
+    <h2>Stay in our respective lanes</h2>
+    <p class="lede">Rather than overlapping with Eclipse’s core embedded / RTOS community, this collaboration pairs two complementary strengths.</p>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="sys-block edge">
+        <div class="slabel">Eclipse &amp; OpenHW · the edge</div>
+        <h3>Deterministic devices &amp; industrial messaging</h3>
+        <p class="sdesc">RTOS execution, hardware enablement, and standardized payloads — the community’s home turf.</p>
+        <div class="sys-pipes">
+          <span>ThreadX / ZoneX</span>
+          <span>RISC-V / MCU</span>
+          <span>Sparkplug / MQTT</span>
+          <span>OpenHW</span>
+        </div>
+      </div>
+      <div class="sys-block lock">
+        <div class="slabel">SoftwareBrio · cloud, AI &amp; apps</div>
+        <h3>Ingestion, MLOps, vision &amp; production UIs</h3>
+        <p class="sdesc">Everything above the device layer — pipelines, models, dashboards, and mobile alerts.</p>
+        <div class="sys-pipes">
+          <span>Kubernetes / Spark</span>
+          <span>SageMaker · GCP · Azure ML</span>
+          <span>Kubeflow / MLflow</span>
+          <span>PyTorch / TF / HF</span>
+          <span>Dashboards &amp; apps</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="phases">
+  <div class="wrap">
+    <div class="kicker">Proposed collaboration</div>
+    <h2>Two phases — start with a lightweight public blueprint</h2>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="sys-block lock">
+        <div class="slabel">Phase 1 · 2–3 week sprint</div>
+        <h3>ThreadX + Sparkplug → Cloud AI reference</h3>
+        <p class="sdesc">Co-create a compact, open-source blueprint: live Sparkplug telemetry (ThreadX device or simulator) feeding a real-time predictive maintenance / anomaly-detection pipeline.</p>
+        <h4>Effort split</h4>
+        <ul class="clean check">
+          <li><b>Eclipse / ThreadX:</b> existing Sparkplug sample or ThreadX payload — zero heavy lifting</li>
+          <li><b>SoftwareBrio:</b> cloud ingestion, MLOps pipeline, AI inference, live monitoring dashboard</li>
+        </ul>
+        <div class="pillrow">
+          <span class="pill in">Reproducible community demo</span>
+          <span class="pill in">OCX webinar / OCX 2027 talk</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">Phase 2 · post-pilot</div>
+        <h3>Ecosystem participation &amp; commercial enablement</h3>
+        <p class="sdesc">After the blueprint, deepen familiarity with Eclipse IoT and ThreadX — then support adopters who need dedicated cloud / AI engineering on top.</p>
+        <ul class="clean check">
+          <li><b>Community:</b> explore Eclipse Foundation participation / membership and ongoing OSS contributions</li>
+          <li><b>Enterprise adopters:</b> vendor-neutral AI/ML, Cloud, MLOps, or full-stack IoT engineering on Eclipse platforms</li>
+        </ul>
+        <div class="pillrow">
+          <span class="pill in">Membership path</span>
+          <span class="pill in">Adopter support</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="architecture">
+  <div class="wrap">
+    <div class="kicker">Phase 1 blueprint</div>
+    <h2>Technical architecture</h2>
+    <p class="lede">Edge stays Eclipse. Messaging stays Sparkplug. SoftwareBrio owns the cloud, MLOps, and operator-facing layer.</p>
+
+    <div class="arch">
+      <div class="arch-col edge">
+        <div class="lbl">Edge / embedded</div>
+        <h5>ThreadX / ZoneX</h5>
+        <ul>
+          <li>or OpenHW RISC-V node</li>
+          <li>Deterministic telemetry</li>
+          <li>Device or simulator OK</li>
+        </ul>
+      </div>
+      <div class="arrow">→</div>
+      <div class="arch-col msg">
+        <div class="lbl">Messaging</div>
+        <h5>Eclipse Sparkplug</h5>
+        <ul>
+          <li>MQTT payload</li>
+          <li>Industrial topic model</li>
+          <li>Birth / data / death</li>
+        </ul>
+      </div>
+      <div class="arrow">→</div>
+      <div class="arch-col cloud">
+        <div class="lbl">Cloud, MLOps &amp; AI</div>
+        <h5>Ingest → infer → alert</h5>
+        <ul>
+          <li>Kubernetes / Spark ingest</li>
+          <li>MLflow · PyTorch · TF</li>
+          <li>Anomaly &amp; forecasting</li>
+          <li>Web dashboards &amp; mobile</li>
+        </ul>
+      </div>
+    </div>
+    <p class="mockcap">Phase 1 reference path — reproducible, documented, community-usable.</p>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="wrap">
+    <div class="kicker">What Phase 1 looks like</div>
+    <h2>Live Sparkplug → predictive maintenance view</h2>
+    <p class="lede">A single industrial use case — e.g. motor / sensor anomaly detection via Sparkplug — with a dashboard operators can follow in a webinar or OCX talk.</p>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <h4>From MQTT topic to model score in one pane</h4>
+        <p>SoftwareBrio builds and documents the cloud side. The Eclipse community brings an existing Sparkplug sample or ThreadX payload — enough to prove the path without a heavy edge build.</p>
+        <div class="topic" style="margin-top:14px">
+          <div class="dim"># spBv1.0 / Factory1 / NDATA / Motor01</div>
+          <div><span class="key">timestamp</span> 1731918722</div>
+          <div><span class="key">metrics</span> rpm=1482 · vib_rms=0.42 · temp_c=71.4</div>
+          <div class="ok">OK  ingest → feature window 30s</div>
+          <div class="ok">OK  anomaly score 0.81 · alert fired</div>
+        </div>
+      </div>
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">demo.softwarebrio.com / eclipse / sparkplug-ai</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Live</span>
+              <span>Devices</span>
+              <span>Models</span>
+              <span>Alerts</span>
+              <span>Docs</span>
+            </div>
+            <div class="desk-main">
+              <div class="kpi-row">
+                <div class="kpi"><div class="l">Sparkplug nodes</div><div class="v">3</div><div class="d">online</div></div>
+                <div class="kpi"><div class="l">Msg / min</div><div class="v">420</div><div class="d">stable</div></div>
+                <div class="kpi"><div class="l">Anomaly</div><div class="v">0.81</div><div class="d warn">Motor01</div></div>
+                <div class="kpi"><div class="l">Inference</div><div class="v">42ms</div><div class="d">p95</div></div>
+              </div>
+              <div class="device-row">
+                <div class="device"><b>Motor01</b><small>ThreadX · vib + RPM</small><div class="st warn">Watch</div></div>
+                <div class="device"><b>Pump02</b><small>Simulator · Sparkplug</small><div class="st">Online</div></div>
+                <div class="device"><b>Fan03</b><small>RISC-V node</small><div class="st">Online</div></div>
+              </div>
+              <div class="chart">
+                <div class="series-lbl">Vibration RMS · Motor01 · last 5 min · anomaly threshold</div>
+                <svg viewBox="0 0 400 110" preserveAspectRatio="none" aria-hidden="true">
+                  <line x1="0" y1="38" x2="400" y2="38" stroke="#d97706" stroke-width="1.2" stroke-dasharray="4 3" opacity=".7"/>
+                  <polyline fill="none" stroke="#0e5c66" stroke-width="2.5" points="0,72 40,68 80,70 120,64 160,66 200,58 240,52 280,40 320,34 360,28 400,30"/>
+                </svg>
+              </div>
+              <div class="alert">
+                <span class="badge">Alert</span>
+                <div><b>Motor01 vibration above threshold</b><small>Sparkplug NDATA · predictive maintenance score 0.81</small></div>
+              </div>
+              <div class="alert">
+                <span class="badge ok">Birth</span>
+                <div><b>Fan03 NBIRTH received</b><small>OpenHW node · metrics registered</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative Phase 1 demo UI — cloud AI on top of Eclipse messaging.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="credentials">
+  <div class="wrap">
+    <div class="kicker">SoftwareBrio</div>
+    <h2>Credentials &amp; industrial proof points</h2>
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">Engineering pedigree</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Founded by Googlers, with leadership experience including Senior Software Developer background at Google. Operating across the USA and India (Indore).</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Delivery track record</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">42+ clients, 100+ products across 10+ countries, 99.5% client satisfaction, and 24/7 support.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Stack above the edge</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Kubernetes, Spark, SageMaker, GCP AI, Azure ML, Kubeflow, MLflow, PyTorch, TensorFlow, Hugging Face — production dashboards and mobile apps.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="kicker">Simple next steps</div>
+    <h2>Low friction from summit to open blueprint</h2>
+    <p class="lede">No heavy commitment up front — just a technical sync, a scoped demo, and a path to publish.</p>
+    <ol class="steps">
+      <li><b>Post-summit follow-up (Week 1)</b> — 20-minute technical sync after Bengaluru Tech Summit to see if a ThreadX / Sparkplug + Cloud AI reference demo aligns with your 2027 roadmap.</li>
+      <li><b>Scope the 2-week demo (Week 2)</b> — agree on a single industrial use case (e.g. motor / sensor anomaly detection via Sparkplug) and assign a lightweight community point of contact.</li>
+      <li><b>Publish &amp; showcase</b> — release the reference blueprint to the community and submit a joint talk / demo if timely for an OCX webinar or OCX 2027 (Brussels).</li>
+    </ol>
+    <div class="callout warn" style="margin-top:18px">
+      <b>Eclipse brings the edge sample. SoftwareBrio builds the cloud AI path.</b> Together we give the community a reproducible Edge-to-Cloud AI reference — and a compelling OCX story.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>SoftwareBrio × Eclipse Foundation</b> — Connecting Open-Source Edge Systems (ThreadX &amp; Sparkplug) to Production Cloud AI.<br>
+    Prepared for Frédéric Desbiens · Bengaluru Tech Summit · 18 November 2026 · Community-first · Vendor-neutral · Phase 1 reference blueprint.
+  </div>
+</footer>
+
+</body>
+</html>

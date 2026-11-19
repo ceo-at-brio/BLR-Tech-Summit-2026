@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLR Tech Summit 2026 — SoftwareBrio Proposals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12161c;
+    --ink-soft:#3c4654;
+    --muted:#6a7484;
+    --line:#d6dde6;
+    --bg:#f3f5f8;
+    --card:#fff;
+    --brand:#0e5c66;
+    --brand-soft:#e3f2f4;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+  }
+  .hero{
+    background:linear-gradient(155deg,#0a1418 0%,#0f2a30 48%,#143840 100%);
+    color:#fff;padding:72px 28px 56px;
+  }
+  .wrap{max-width:920px;margin:0 auto}
+  .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    border:1px solid rgba(255,255,255,.25);padding:6px 12px;border-radius:99px;margin-bottom:18px;font-weight:600;
+  }
+  h1{
+    font-family:"Space Grotesk",sans-serif;font-size:clamp(28px,4vw,40px);
+    line-height:1.15;letter-spacing:-.03em;margin:0 0 12px;max-width:16ch;
+  }
+  .sub{color:rgba(255,255,255,.8);max-width:54ch;margin:0;font-size:16.5px}
+  main{padding:40px 28px 72px}
+  .grid{display:grid;gap:14px}
+  a.card{
+    display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;text-decoration:none;color:inherit;
+    box-shadow:0 1px 2px rgba(18,22,28,.04), 0 8px 24px rgba(18,22,28,.05);
+    transition:border-color .15s, transform .15s;
+  }
+  a.card:hover{border-color:#b8dce0;transform:translateY(-1px)}
+  .tag{
+    display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    font-weight:700;color:var(--brand);background:var(--brand-soft);
+    padding:4px 9px;border-radius:6px;margin-bottom:10px;
+  }
+  a.card h2{
+    font-family:"Space Grotesk",sans-serif;font-size:20px;margin:0 0 6px;
+    letter-spacing:-.02em;
+  }
+  a.card p{margin:0;color:var(--ink-soft);font-size:14.5px}
+  a.card .for{margin-top:10px;font-size:13px;color:var(--muted)}
+  footer{padding:0 28px 48px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Bengaluru Tech Summit 2026</div>
+      <h1>SoftwareBrio proposal deck</h1>
+      <p class="sub">HTML proposals prepared for summit conversations — open any card to view the full page.</p>
+    </div>
+  </header>
+  <main>
+    <div class="wrap grid">
+      <a class="card" href="refinyx.html">
+        <span class="tag">Industrial IoT · Refinyx</span>
+        <h2>Digital Infrastructure for Pilot Velocity &amp; Global Plant Optimization</h2>
+        <p>Loophouse SCADA↔QC pipelines, remote plant telemetry, and client delivery portal.</p>
+        <div class="for">For Dr. Mahmood Alemrajabi, Refinyx</div>
+      </a>
+      <a class="card" href="joycle-board.html">
+        <span class="tag">Edge resilience · JOYCLE</span>
+        <h2>JOYCLE BOARD Technical Collaboration</h2>
+        <p>Fault-tolerant Sparkplug-style telemetry resilience and 10-unit fleet health dashboard.</p>
+        <div class="for">For Yutaro Koyanagi, JOYCLE</div>
+      </a>
+      <a class="card" href="earthpulse.html">
+        <span class="tag">EO / SPAI · EarthPulse</span>
+        <h2>Scaling EarthPulse from Proven EO Science to Global Impact</h2>
+        <p>Cloud/MLOps, Web GIS polish, field apps, and India pilot delivery around SPAI.</p>
+        <div class="for">For Fran Martín Rivas, EarthPulse</div>
+      </a>
+      <a class="card" href="threadx-sparkplug.html">
+        <span class="tag">Eclipse · ThreadX / Sparkplug</span>
+        <h2>Connecting Open-Source Edge Systems to Production Cloud AI</h2>
+        <p>Community-first ThreadX + Sparkplug → cloud AI reference blueprint.</p>
+        <div class="for">For Frédéric Desbiens, Eclipse Foundation</div>
+      </a>
+      <a class="card" href="edvi-cross-border.html">
+        <span class="tag">Partnership · Edvi Law</span>
+        <h2>Cross-Border Tech Execution &amp; Legal Alignment</h2>
+        <p>Israel–India–US alignment: privacy-first AI builds, SaaS scaling, proof before referrals.</p>
+        <div class="for">For Hadar Edvi, Edvi Law Firm</div>
+      </a>
+    </div>
+  </main>
+  <footer>
+    <div class="wrap">SoftwareBrio · Bengaluru Tech Summit 2026</div>
+  </footer>
+</body>
+</html>

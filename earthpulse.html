@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftwareBrio × EarthPulse — Scaling SPAI to Global Operations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#101820;
+    --ink-soft:#3b4a57;
+    --muted:#6b7a88;
+    --line:#d5dee6;
+    --bg:#f2f5f8;
+    --card:#ffffff;
+    --brand:#1a5f7a;
+    --brand-deep:#0d3a4a;
+    --brand-soft:#e4f1f6;
+    --accent:#c45f2c;
+    --accent-soft:#fbeae1;
+    --earth:#2d6a4f;
+    --earth-soft:#e5f3ec;
+    --signal:#178a4f;
+    --warn:#b7791f;
+    --warn-soft:#fef3c7;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(16,24,32,.05), 0 10px 28px rgba(16,24,32,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line);scroll-margin-top:68px}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:-.01em;white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--muted);font-weight:500}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:
+      radial-gradient(ellipse 65% 50% at 88% 18%, rgba(196,95,44,.2), transparent 55%),
+      radial-gradient(ellipse 55% 45% at 12% 80%, rgba(26,95,122,.35), transparent 50%),
+      linear-gradient(155deg,#07131c 0%,#0d2a38 48%,#143d4f 100%);
+    color:#fff;padding:76px 0 68px;border:none;position:relative;overflow:hidden;
+  }
+  .cover::before{
+    content:"";position:absolute;inset:0;opacity:.2;pointer-events:none;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.08) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 70% 60%, rgba(255,255,255,.06) 0 1px, transparent 1.5px),
+      linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+    background-size:3px 3px, 4px 4px, 52px 52px, 52px 52px;
+    mask-image:linear-gradient(180deg,#000 20%,transparent 90%);
+  }
+  .cover .wrap{position:relative}
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(28px,4.2vw,44px);line-height:1.12;margin:0 0 16px;
+    letter-spacing:-.03em;font-weight:700;max-width:18ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.88);max-width:58ch;margin:0 0 18px;line-height:1.55}
+  .cover .byline{
+    display:flex;flex-direction:column;gap:6px;margin:0 0 34px;max-width:64ch;
+  }
+  .cover .byline p{margin:0;font-size:14px;color:rgba(255,255,255,.78);line-height:1.45}
+  .cover .byline strong{color:#fff;font-weight:600}
+  .cover .byline .event{
+    font-size:12.5px;color:rgba(255,255,255,.58);letter-spacing:.02em;
+  }
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:11px 16px;border-radius:10px;min-width:150px;backdrop-filter:blur(8px);
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;
+    letter-spacing:-.022em;font-weight:700;
+  }
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650;font-family:"Space Grotesk",sans-serif}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media screen and (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{
+    display:block;font-family:"Space Grotesk",sans-serif;font-size:26px;line-height:1.1;
+    letter-spacing:-.03em;color:var(--brand);font-weight:700;
+  }
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#b8d6e2;background:linear-gradient(180deg,#f1f8fb 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#f0d0bc;background:linear-gradient(180deg,#fff7f2 0%,#fff 55%)}
+  .sys-block.earth{border-color:#b9dcc9;background:linear-gradient(180deg,#f2faf5 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--brand);background:var(--brand-soft)}
+  .sys-block.stretch .slabel{color:var(--accent);background:var(--accent-soft)}
+  .sys-block.earth .slabel{color:var(--earth);background:var(--earth-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:17px}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--signal);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--earth-soft);border:1px solid #b9dcc9;border-left:3px solid var(--earth);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#1b4332;
+  }
+  .callout b{color:#0f2f22}
+  .callout.warn{background:var(--accent-soft);border-color:#f0d0bc;border-left-color:var(--accent);color:#7a3a16}
+  .callout.warn b{color:#5c2a0f}
+  .callout.soft{background:var(--brand-soft);border-color:#b8d6e2;border-left-color:var(--brand);color:#0d3a4a}
+  .callout.soft b{color:#0a2d3a}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+  .pill.in{background:var(--brand-soft);border-color:#b8d6e2;color:var(--brand)}
+  .pill.out{background:#f7f8fa;color:var(--muted);text-decoration:line-through;opacity:.75}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  @media screen and (max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .desk{
+    background:#d9e2ea;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f3f7fa;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f6f9fb;
+    font-size:12px;font-weight:650;color:var(--muted);flex-wrap:wrap;
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media screen and (max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+  .kpi{
+    background:#f6f9fb;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  }
+  .kpi .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .v{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+  .kpi .d{font-size:11px;color:var(--signal);font-weight:600;margin-top:2px}
+  .kpi .d.down{color:var(--accent)}
+  .kpi .d.warn{color:var(--warn)}
+
+  .map{
+    height:210px;border-radius:12px;border:1px solid var(--line);overflow:hidden;position:relative;
+    background:
+      linear-gradient(135deg, rgba(26,95,122,.12), transparent 40%),
+      linear-gradient(200deg, #c8d9c4 0%, #b7c9b0 35%, #9eb8a8 55%, #7a9aad 100%);
+  }
+  .map::before{
+    content:"";position:absolute;inset:0;opacity:.35;
+    background-image:
+      linear-gradient(rgba(16,24,32,.08) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(16,24,32,.08) 1px, transparent 1px);
+    background-size:28px 28px;
+  }
+  .corridor{
+    position:absolute;left:8%;top:42%;width:84%;height:10px;
+    background:linear-gradient(90deg, transparent, rgba(196,95,44,.55), rgba(196,95,44,.85), rgba(196,95,44,.45), transparent);
+    border-radius:99px;transform:rotate(-6deg);filter:blur(.2px);
+  }
+  .hotspot{
+    position:absolute;transform:translate(-50%,-50%);
+    background:#fff;border:1px solid var(--line);border-radius:8px;
+    padding:5px 8px;font-size:10.5px;font-weight:700;box-shadow:0 4px 12px rgba(16,24,32,.14);
+    white-space:nowrap;z-index:2;
+  }
+  .hotspot .dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--accent)}
+  .hotspot.safe .dot{background:var(--signal)}
+  .hotspot.watch .dot{background:var(--warn)}
+  .legend{
+    position:absolute;left:10px;bottom:10px;z-index:2;
+    background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:8px;
+    padding:7px 10px;font-size:10.5px;font-weight:650;color:var(--ink-soft);
+  }
+
+  .phone{
+    width:100%;max-width:300px;margin:0 auto;background:#fff;
+    border:1px solid var(--line);border-radius:26px;padding:14px;
+    box-shadow:0 18px 44px rgba(16,24,32,.14);
+  }
+  .ph-top{font-size:11px;color:var(--muted);display:flex;justify-content:space-between;padding:0 6px 10px;font-weight:600}
+  .ph-app{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--brand);font-weight:700;margin-bottom:8px}
+  .ph-title{font-size:17px;font-weight:700;letter-spacing:-.02em}
+  .ph-sub{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .ph-card{
+    margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#f6f9fb;
+  }
+  .ph-card.risk{border-color:#f0d0bc;background:var(--accent-soft)}
+  .ph-card b{display:block;font-size:13px;margin-bottom:4px}
+  .ph-card span{font-size:12px;color:var(--ink-soft)}
+  .ph-btn{
+    display:block;width:100%;text-align:center;font-size:13px;font-weight:650;
+    padding:11px;border-radius:10px;margin-top:10px;border:none;background:var(--brand);color:#fff;
+  }
+  .ph-btn.ghost{background:#fff;color:var(--ink-soft);border:1px solid var(--line);margin-top:8px}
+
+  .pipe{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin-top:18px;
+  }
+  @media screen and (max-width:760px){
+    .pipe{grid-template-columns:1fr;gap:10px}
+    .pipe .arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .pipe-box{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow);
+  }
+  .pipe-box.core{border-color:#b8d6e2;background:linear-gradient(180deg,#f1f8fb,#fff)}
+  .pipe-box h5{margin:0 0 4px;font-size:13px;font-weight:700}
+  .pipe-box p{margin:0;font-size:11.5px;color:var(--muted)}
+  .pipe .arrow{color:var(--muted);font-weight:700;font-size:18px}
+
+  .mlops{
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#0b1620;color:#d7e6ef;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;line-height:1.55;padding:14px;
+  }
+  .mlops .ok{color:#6ee7a8}
+  .mlops .info{color:#7dd3fc}
+  .mlops .dim{opacity:.55}
+
+  .chat{
+    border:1px solid var(--line);border-radius:12px;padding:14px;background:#f6f9fb;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .bubble{
+    max-width:92%;padding:10px 12px;border-radius:12px;font-size:12.6px;line-height:1.45;
+  }
+  .bubble.bot{background:#fff;border:1px solid var(--line);align-self:flex-start;border-bottom-left-radius:4px}
+  .bubble.me{background:var(--brand);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+  .bubble .who{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:4px;opacity:.7}
+
+  .ticket{
+    display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;
+    padding:10px 12px;margin-bottom:8px;font-size:12.5px;background:#fff;
+  }
+  .ticket:last-child{margin-bottom:0}
+  .ticket .id{font-weight:800;color:var(--brand);font-size:11px;letter-spacing:.04em}
+  .ticket b{display:block}
+  .ticket small{color:var(--muted)}
+  .tag{
+    display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;
+    background:var(--accent-soft);color:var(--accent);white-space:nowrap;
+  }
+  .tag.green{background:var(--earth-soft);color:var(--earth)}
+  .tag.blue{background:var(--brand-soft);color:var(--brand)}
+
+  .tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);box-shadow:var(--shadow)}
+  table{width:100%;border-collapse:collapse;font-size:13.4px;min-width:640px}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{
+    background:#f6f9fb;font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--muted);font-weight:700;white-space:nowrap;
+  }
+  tbody tr:last-child td{border-bottom:none}
+
+  .steps{counter-reset:ns;margin:18px 0 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:ns;position:relative;padding:16px 16px 16px 58px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(ns);position:absolute;left:16px;top:16px;
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .steps li b{color:var(--ink)}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+
+  @page{size:Letter;margin:0.4in 0.45in}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{background:#fff !important}
+    .topbar{display:none !important}
+    .wrap{max-width:none !important;width:100% !important;padding:0 !important}
+    section{padding:18px 0 !important;break-inside:auto;page-break-inside:auto;scroll-margin-top:0}
+    .cover{
+      background:linear-gradient(155deg,#07131c 0%,#0d2a38 48%,#143d4f 100%) !important;
+      padding:28px 22px 24px !important;margin:0 0 8px !important;border-radius:14px;overflow:visible !important;
+    }
+    .cover h1{font-size:26px !important}
+    .cover .sub{font-size:13px !important;margin-bottom:12px !important}
+    .cover .byline{margin-bottom:22px !important}
+    .cover .byline p{font-size:12.5px !important}
+    .cover .byline .event{font-size:11.5px !important}
+    h2,h3,h4,.kicker{break-after:avoid;page-break-after:avoid}
+    h2{font-size:20px !important}
+    .lede{font-size:13px !important}
+    .grid.g2{grid-template-columns:repeat(2,1fr) !important}
+    .grid.g3{grid-template-columns:repeat(3,1fr) !important}
+    .grid.g4{grid-template-columns:repeat(4,1fr) !important}
+    .pipe{grid-template-columns:1fr auto 1fr auto 1fr !important}
+    .pipe .arrow{transform:none !important}
+    .kpi-row{grid-template-columns:repeat(4,1fr) !important}
+    .jstep,.jstep.reverse{grid-template-columns:1fr !important;gap:14px !important}
+    .jcopy,.desk,.phone,.sys-block,.card,.stat,.callout,.steps li,.pipe,.tablewrap,.chat,.mlops{
+      break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;
+    }
+    table{min-width:0 !important}
+    .tablewrap{overflow:visible !important}
+    footer{padding:18px 0 8px !important}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">SoftwareBrio <span>× EarthPulse</span></div>
+    <nav>
+      <a href="#summary">Summary</a>
+      <a href="#accelerate">Accelerate</a>
+      <a href="#spai">SPAI UI</a>
+      <a href="#field">Field apps</a>
+      <a href="#models">Models</a>
+      <a href="#next">Next step</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Strategic engineering &amp; AI infrastructure proposal</div>
+    <h1>Scaling EarthPulse from Proven EO Science to Global Operational Impact</h1>
+    <p class="sub">You own the science. We accelerate the cloud, MLOps, UI, and last-mile integrations around SPAI — so EarthPulse can activate new areas in hours, not months.</p>
+    <div class="byline">
+      <p>Prepared for <strong>Fran Martín Rivas</strong>, Geospatial Product &amp; Project Lead, EarthPulse<br>by Parag Goyal, SoftwareBrio</p>
+      <p class="event">Bengaluru Tech Summit — Spain–India Innovation Dialogues · 18 November 2026</p>
+    </div>
+    <div class="meta">
+      <div><span>Science</span><b>SPAI + vertical Pulses</b></div>
+      <div><span>Focus</span><b>Scale · UI · last mile</b></div>
+      <div><span>Start</span><b>4-week focused sprint</b></div>
+      <div><span>IP</span><b>100% EarthPulse owned</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="summary">
+  <div class="wrap">
+    <div class="kicker">Executive summary</div>
+    <h2>The hard science is proven. The next bottleneck is operational scale.</h2>
+    <p class="lede">EarthPulse has already solved the hardest challenge in Earth Observation: turning complex satellite, weather, and mobility datasets into proven, decision-ready risk intelligence through SPAI and your vertical Pulses — validated across deployments with Abertis, ESA, EUSPA, and EARSC Product Award recognition.</p>
+    <p class="lede">As you scale from regional corridors to global, multi-tenant operations — including potential climate-resilience deployments in India — the primary bottleneck shifts from scientific R&amp;D to platform scalability, frontend polish, and last-mile workflow integration.</p>
+
+    <div class="grid g4" style="margin-top:26px">
+      <div class="stat"><b>SPAI</b><span>Core platform you already proved</span></div>
+      <div class="stat"><b>Pulses</b><span>Landslide · Road Safety · Water Leak</span></div>
+      <div class="stat"><b>1TB+/day</b><span>Processing target we engineer for</span></div>
+      <div class="stat"><b>100%</b><span>EO science &amp; IP stay with you</span></div>
+    </div>
+
+    <div class="pipe">
+      <div class="pipe-box">
+        <h5>EO science (yours)</h5>
+        <p>SPAI · Pulses · models</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pipe-box core">
+        <h5>SoftwareBrio layer</h5>
+        <p>Cloud · MLOps · UI · integrations</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pipe-box">
+        <h5>Operational impact</h5>
+        <p>Hours not months · crews · ROI</p>
+      </div>
+    </div>
+    <p class="mockcap">EarthPulse retains product vision and EO IP. We are a high-leverage engineering extension around SPAI.</p>
+  </div>
+</section>
+
+<section id="accelerate">
+  <div class="wrap">
+    <div class="kicker">How we accelerate</div>
+    <h2>Four levers around SPAI — without touching your science core</h2>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="sys-block lock">
+        <div class="slabel">1 · Cloud &amp; MLOps</div>
+        <h3>High-throughput pipelines at global scale</h3>
+        <p class="sdesc">Expanding from pilot corridors to national and global networks requires automated, cost-efficient ingestion and inference across massive raster and vector datasets.</p>
+        <div class="sys-pipes">
+          <span>Python</span>
+          <span>Spark</span>
+          <span>Kubernetes</span>
+          <span>Kubeflow</span>
+          <span>MLflow</span>
+          <span>Azure · AWS · GCP</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">2 · Web GIS &amp; AI UI</div>
+        <h3>Cartography UX operators actually use</h3>
+        <p class="sdesc">Enterprise asset operators are rarely GIS specialists. Adoption depends on crisp cartography, fast map rendering, and intuitive risk dashboards — plus emerging LLM / MCP interfaces.</p>
+        <div class="sys-pipes">
+          <span>Web GIS polish</span>
+          <span>KPI dashboards</span>
+          <span>LLM / MCP chat</span>
+          <span>Non-technical clarity</span>
+        </div>
+      </div>
+      <div class="sys-block earth">
+        <div class="slabel">3 · Last-mile ops</div>
+        <h3>Alerts into workflows + field ground-truth</h3>
+        <p class="sdesc">Risk predictions create measurable ROI only when embedded in daily maintenance protocols and validated on the ground.</p>
+        <div class="sys-pipes">
+          <span>ERP / ticketing APIs</span>
+          <span>Offline field apps</span>
+          <span>Inspection logging</span>
+          <span>Labels → ML</span>
+        </div>
+      </div>
+      <div class="sys-block lock">
+        <div class="slabel">4 · Pod + India</div>
+        <h3>One engineering pod, India delivery ready</h3>
+        <p class="sdesc">Stop coordinating freelancers across frontend, backend, and data science. One self-managed pod on your sprints — plus local delivery for Indian highway, municipal, or utility pilots.</p>
+        <div class="sys-pipes">
+          <span>Jira + GitHub</span>
+          <span>2–4 engineers</span>
+          <span>India localization</span>
+          <span>Pilot co-delivery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mlops">
+  <div class="wrap">
+    <div class="kicker">Pillar 1</div>
+    <h2>Activate new areas in hours, not months</h2>
+    <p class="lede">We harden data pipelines and MLOps workflows for 1TB+/day processing at 99.9% uptime — with deep Azure expertise aligned to SPAI’s Microsoft Marketplace footprint, plus AWS and GCP.</p>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <h4>From corridor pilots to multi-tenant global runs</h4>
+        <p>Ingestion, feature pipelines, model registry, and inference scheduling stay under EarthPulse control. We make the platform side boring, reliable, and cost-efficient so your team can keep shipping Pulses.</p>
+        <div class="callout soft" style="margin-top:14px">
+          <b>Boundary.</b> Proprietary EO algorithms stay yours. We engineer the platform layer around them — pipelines, orchestration, observability, and cloud cost control.
+        </div>
+      </div>
+      <div>
+        <div class="mlops">
+          <div class="dim"># spaı / activate corridor · IN-NH48 · request</div>
+          <div class="info">INFO  raster tiles queued · 142 GB · Sentinel + weather</div>
+          <div class="info">INFO  vector overlay · roads · assets · mobility</div>
+          <div class="ok">OK    kubeflow run · landslide-pulse@2.4.1</div>
+          <div class="ok">OK    inference complete · 18m 42s · cost $11.20</div>
+          <div class="ok">OK    area live on SPAI · multi-tenant ready</div>
+          <div class="dim"># previously: weeks of manual staging</div>
+        </div>
+        <p class="mockcap">Indicative activation log — automated ingest → infer → publish.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="spai">
+  <div class="wrap">
+    <div class="kicker">Pillar 2</div>
+    <h2>Web GIS that non-GIS operators trust in seconds</h2>
+    <p class="lede">Dedicated product and frontend engineers to elevate SPAI’s interactive maps, KPI dashboards, and conversational interfaces so decision-makers get immediate operational clarity.</p>
+
+    <div class="jstep reverse">
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">spai.earthpulse.ai / pulses / road-safety</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Map</span>
+              <span>KPIs</span>
+              <span>Pulses</span>
+              <span>Ask SPAI</span>
+              <span>Exports</span>
+            </div>
+            <div class="desk-main">
+              <div class="kpi-row">
+                <div class="kpi"><div class="l">Corridor risk</div><div class="v">High</div><div class="d down">3 segments</div></div>
+                <div class="kpi"><div class="l">Watch zones</div><div class="v">12</div><div class="d warn">next 72h</div></div>
+                <div class="kpi"><div class="l">Open tickets</div><div class="v">7</div><div class="d">synced ERP</div></div>
+                <div class="kpi"><div class="l">Ground truth</div><div class="v">94%</div><div class="d">labels back</div></div>
+              </div>
+              <div class="map">
+                <div class="corridor"></div>
+                <div class="hotspot" style="left:28%;top:38%"><span class="dot"></span>Landslide · km 142</div>
+                <div class="hotspot watch" style="left:54%;top:48%"><span class="dot"></span>Road risk · km 167</div>
+                <div class="hotspot safe" style="left:76%;top:58%"><span class="dot"></span>Clear · km 189</div>
+                <div class="legend">Pulse overlay · Abertis-style corridor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative SPAI Web GIS — crisp cartography, risk KPIs, operator-ready.</p>
+      </div>
+      <div class="jcopy">
+        <h4>Maps first. Then chat when it helps.</h4>
+        <p>Fast rendering and clear symbology for Landslide Pulse, Road Safety Pulse, and Water Leak Pulse. LLM / MCP conversational interfaces on top — so a network manager can ask a question without learning a GIS toolbar.</p>
+        <div class="chat" style="margin-top:14px">
+          <div class="bubble me"><span class="who">Operator</span>Which segments need inspection before Friday’s rain?</div>
+          <div class="bubble bot"><span class="who">SPAI</span>Three high-risk segments on NH-48 (km 142–149). Landslide Pulse confidence 0.87. I can open tickets and push to the field crew app.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="field">
+  <div class="wrap">
+    <div class="kicker">Pillar 3</div>
+    <h2>Last-mile: from pulse alert to crew on the ground</h2>
+    <p class="lede">Integrate Pulses into ERP, asset-management, and ticketing systems — and give road and utility crews offline-capable apps to inspect, log, and feed verified labels back into your models.</p>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <h4>Enterprise workflow automation</h4>
+        <p>Landslide, Road Safety, and Water Leak alerts land where maintenance already lives — not in another dashboard nobody opens.</p>
+        <div style="margin-top:14px">
+          <div class="ticket">
+            <span class="id">ERP-4412</span>
+            <div style="flex:1"><b>Inspect km 142–144 · slope</b><small>Landslide Pulse · auto-created</small></div>
+            <span class="tag">High</span>
+          </div>
+          <div class="ticket">
+            <span class="id">TKT-908</span>
+            <div style="flex:1"><b>Barrier check · km 167</b><small>Road Safety Pulse · assigned crew B</small></div>
+            <span class="tag blue">Queued</span>
+          </div>
+          <div class="ticket">
+            <span class="id">WL-220</span>
+            <div style="flex:1"><b>Leak anomaly · sector 4</b><small>Water Leak Pulse · utility sync</small></div>
+            <span class="tag green">Open</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="phone">
+          <div class="ph-top"><span>9:41</span><span>EarthPulse Field</span></div>
+          <div class="ph-app">Field inspection</div>
+          <div class="ph-title">km 142 · landslide watch</div>
+          <div class="ph-sub">Offline ready · sync when back on network</div>
+          <div class="ph-card risk">
+            <b>Risk alert received</b>
+            <span>Landslide Pulse · confidence 0.87 · rain window Fri–Sat</span>
+          </div>
+          <div class="ph-card">
+            <b>Log inspection</b>
+            <span>Photo · notes · ground-truth label for SPAI</span>
+          </div>
+          <button class="ph-btn" type="button">Confirm on-site status</button>
+          <button class="ph-btn ghost" type="button">Save offline draft</button>
+        </div>
+        <p class="mockcap">Cross-platform field app — alerts in, verified labels out.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="models">
+  <div class="wrap">
+    <div class="kicker">Engagement</div>
+    <h2>Flexible models — start where the bottleneck is</h2>
+    <p class="lede">One cohesive pod instead of many freelancers. Pick a focused sprint, embed the team, or co-deliver India pilots from this summit.</p>
+
+    <div class="tablewrap" style="margin-top:22px">
+      <table>
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Best for</th>
+            <th>Structure &amp; focus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>4-Week Focused Sprint</b></td>
+            <td>Validating velocity on one priority bottleneck</td>
+            <td>Fixed-scope sprint — e.g. Web GIS UI / cartography upgrade, Azure MLOps optimization, or a field-inspection mobile MVP.</td>
+          </tr>
+          <tr>
+            <td><b>Embedded Engineering Pod</b></td>
+            <td>Reducing PM and freelancer coordination load</td>
+            <td>Dedicated 2–4 engineer pod (MLOps / Backend + Full-Stack / GIS Frontend) in EarthPulse’s Jira and GitHub workflows.</td>
+          </tr>
+          <tr>
+            <td><b>India Pilot Delivery Partner</b></td>
+            <td>Winning and deploying Indian infrastructure pilots</td>
+            <td>Co-delivery of custom integrations, local data connectors, and field apps for highway, municipal, or utility deployments.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">Engineering pedigree</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Founded by former Googlers with a strict, product-first engineering culture.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Proven delivery</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">100+ products launched across 10+ countries with 99.5% client satisfaction.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Aligned stack</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Python, PyTorch, TensorFlow, Hugging Face, Spark, K8s, Kubeflow, MLflow, Azure ML, SageMaker, GCP, PostgreSQL, Snowflake.</p>
+      </div>
+    </div>
+
+    <div class="pillrow" style="margin-top:16px">
+      <span class="pill in">100% client-owned IP</span>
+      <span class="pill in">Strict NDAs</span>
+      <span class="pill in">EO algorithms stay yours</span>
+      <span class="pill in">Platform engineering only</span>
+      <span class="pill out">Owning your science roadmap</span>
+    </div>
+
+    <div class="callout" style="margin-top:18px">
+      <b>IP &amp; security first.</b> Clear boundaries between EarthPulse’s proprietary EO algorithms and our platform engineering. You keep the science; we accelerate everything around it.
+    </div>
+  </div>
+</section>
+
+<section id="next">
+  <div class="wrap">
+    <div class="kicker">Proposed next step</div>
+    <h2>One bottleneck. One 4-week pilot.</h2>
+    <p class="lede">Schedule a 20-minute post-summit technical call with you and your engineering lead to identify one high-leverage bottleneck on SPAI’s upcoming roadmap and scope a concrete 4-week pilot.</p>
+    <ol class="steps">
+      <li><b>Pick the highest-leverage bottleneck</b> — Web GIS / cartography, Azure MLOps throughput, or field-inspection mobile MVP.</li>
+      <li><b>Align success metrics</b> with your engineering lead for a fixed-scope 4-week sprint.</li>
+      <li><b>Decide whether India pilot delivery</b> should sit beside the sprint for any highway, municipal, or climate-resilience opportunity from this dialogue.</li>
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>SoftwareBrio × EarthPulse</b> — Scaling EarthPulse from Proven EO Science to Global Operational Impact.<br>
+    Prepared for Fran Martín Rivas · Bengaluru Tech Summit — Spain–India Innovation Dialogues · 18 November 2026 · SPAI platform engineering · 100% EarthPulse IP.
+  </div>
+</footer>
+
+</body>
+</html>

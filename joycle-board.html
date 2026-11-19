@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SoftwareBrio × JOYCLE — JOYCLE BOARD Technical Collaboration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12181f;
+    --ink-soft:#3a4652;
+    --muted:#6a7784;
+    --line:#d7e0e6;
+    --bg:#f2f6f4;
+    --card:#ffffff;
+    --brand:#1b6b4a;
+    --brand-deep:#0f3f2d;
+    --brand-soft:#e3f3eb;
+    --accent:#c45a2c;
+    --accent-soft:#fbe9e1;
+    --signal:#178a4f;
+    --signal-soft:#e4f6ec;
+    --warn:#b7791f;
+    --warn-soft:#fef3c7;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(18,24,31,.05), 0 10px 28px rgba(18,24,31,.06);
+  }
+
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"IBM Plex Sans",ui-sans-serif,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  section{padding:56px 0;border-top:1px solid var(--line);scroll-margin-top:68px}
+  section:first-of-type{border-top:none}
+
+  .topbar{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{display:flex;align-items:center;gap:22px;height:58px}
+  .topbar .brand{
+    font-family:"Space Grotesk",sans-serif;font-weight:700;font-size:14px;
+    letter-spacing:-.01em;white-space:nowrap;
+  }
+  .topbar .brand span{color:var(--muted);font-weight:500}
+  .topbar nav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+  .topbar nav::-webkit-scrollbar{display:none}
+  .topbar nav a{
+    font-size:13px;color:var(--ink-soft);text-decoration:none;
+    padding:6px 11px;border-radius:8px;white-space:nowrap;font-weight:500;
+  }
+  .topbar nav a:hover{background:var(--brand-soft);color:var(--brand)}
+
+  .cover{
+    background:
+      radial-gradient(ellipse 70% 55% at 90% 15%, rgba(196,90,44,.22), transparent 55%),
+      radial-gradient(ellipse 55% 45% at 8% 85%, rgba(27,107,74,.32), transparent 50%),
+      linear-gradient(155deg,#0c1a14 0%,#123528 45%,#1a4a36 100%);
+    color:#fff;padding:76px 0 68px;border:none;position:relative;overflow:hidden;
+  }
+  .cover::before{
+    content:"";position:absolute;inset:0;opacity:.16;pointer-events:none;
+    background-image:
+      linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:linear-gradient(180deg,#000 15%,transparent 88%);
+  }
+  .cover .wrap{position:relative}
+  .cover .eyebrow{
+    display:inline-block;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);
+    padding:6px 13px;border-radius:99px;margin-bottom:22px;font-weight:600;
+  }
+  .cover h1{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(28px,4.2vw,46px);line-height:1.12;margin:0 0 16px;
+    letter-spacing:-.03em;font-weight:700;max-width:16ch;
+  }
+  .cover .sub{font-size:17px;color:rgba(255,255,255,.86);max-width:64ch;margin:0 0 34px}
+  .cover .sub strong{color:#fff;font-weight:600}
+  .meta{display:flex;flex-wrap:wrap;gap:14px}
+  .meta div{
+    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);
+    padding:11px 16px;border-radius:10px;min-width:150px;
+    backdrop-filter:blur(8px);
+  }
+  .meta span{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.58);margin-bottom:3px;font-weight:600}
+  .meta b{font-size:14px;font-weight:600}
+
+  .kicker{
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--brand);font-weight:700;margin-bottom:10px;
+  }
+  h2{
+    font-family:"Space Grotesk",sans-serif;
+    font-size:clamp(23px,2.6vw,31px);line-height:1.2;margin:0 0 12px;
+    letter-spacing:-.022em;font-weight:700;
+  }
+  h3{font-size:18px;margin:34px 0 12px;letter-spacing:-.012em;font-weight:650;font-family:"Space Grotesk",sans-serif}
+  h4{font-size:14.5px;margin:22px 0 8px;font-weight:650;color:var(--ink)}
+  .lede{font-size:16.5px;color:var(--ink-soft);max-width:76ch;margin:0 0 8px}
+  p{margin:0 0 14px}
+  a{color:var(--brand)}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media screen and (max-width:860px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+  .stat b{
+    display:block;font-family:"Space Grotesk",sans-serif;font-size:27px;line-height:1.1;
+    letter-spacing:-.03em;color:var(--brand);font-weight:700;
+  }
+  .stat span{display:block;font-size:13px;color:var(--muted);margin-top:6px}
+
+  .sys-block{
+    background:var(--card);border:1px solid var(--line);border-radius:16px;
+    padding:22px;box-shadow:var(--shadow);
+  }
+  .sys-block.lock{border-color:#bfe4d0;background:linear-gradient(180deg,#f2faf5 0%,#fff 55%)}
+  .sys-block.stretch{border-color:#f0d0bc;background:linear-gradient(180deg,#fff7f2 0%,#fff 55%)}
+  .sys-block .slabel{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+    padding:5px 10px;border-radius:99px;margin-bottom:12px;
+  }
+  .sys-block.lock .slabel{color:var(--signal);background:var(--signal-soft)}
+  .sys-block.stretch .slabel{color:var(--accent);background:var(--accent-soft)}
+  .sys-block h3{margin:0 0 4px;font-size:18px}
+  .sys-block .sdesc{margin:0 0 14px;font-size:13.5px;color:var(--ink-soft)}
+  .sys-pipes{display:flex;flex-wrap:wrap;gap:8px}
+  .sys-pipes span{
+    font-size:12px;font-weight:650;color:var(--ink-soft);background:#fff;
+    border:1px solid var(--line);border-radius:8px;padding:6px 10px;
+  }
+  .price{
+    font-family:"Space Grotesk",sans-serif;font-size:28px;font-weight:700;
+    letter-spacing:-.03em;color:var(--brand);margin:8px 0 4px;
+  }
+  .price small{display:block;font-size:13px;color:var(--muted);font-weight:500;letter-spacing:0;margin-top:4px}
+
+  .timeline{position:relative;margin:22px 0 0}
+  .tl-item{display:grid;grid-template-columns:118px 1fr;gap:18px;position:relative;padding-bottom:22px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{
+    content:"";position:absolute;left:118px;top:26px;bottom:-2px;width:2px;
+    background:var(--line);transform:translateX(-1px);
+  }
+  .tl-item:last-child::before{display:none}
+  .tl-time{
+    text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13.5px;
+    color:var(--brand);padding-top:2px;
+  }
+  .tl-body{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;box-shadow:var(--shadow)}
+  .tl-body h5{margin:0 0 5px;font-size:14px;font-weight:650}
+  .tl-body p{margin:0;font-size:13.4px;color:var(--ink-soft)}
+  @media screen and (max-width:620px){
+    .tl-item{grid-template-columns:1fr;gap:8px}
+    .tl-item::before{display:none}
+    .tl-time{text-align:left}
+  }
+
+  ul.clean{list-style:none;padding:0;margin:0}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;font-size:14px;color:var(--ink-soft)}
+  ul.clean li::before{
+    content:"";position:absolute;left:7px;top:9px;width:6px;height:6px;
+    border-radius:50%;background:var(--brand);
+  }
+  ul.clean li b,ul.clean li strong{color:var(--ink);font-weight:650}
+  ul.check li::before{
+    content:"✓";left:0;top:0;width:auto;height:auto;background:none;
+    color:var(--signal);font-weight:800;font-size:13px;
+  }
+
+  .callout{
+    background:var(--signal-soft);border:1px solid #bfe4d0;border-left:3px solid var(--signal);
+    border-radius:10px;padding:16px 18px;font-size:13.8px;color:#0f4d30;
+  }
+  .callout b{color:#0a3823}
+  .callout.warn{background:var(--accent-soft);border-color:#f0d0bc;border-left-color:var(--accent);color:#7a3a16}
+  .callout.warn b{color:#5c2a0f}
+  .callout.soft{background:var(--brand-soft);border-color:#b8dcc8;border-left-color:var(--brand);color:#0a4530}
+  .callout.soft b{color:#0f3f2d}
+
+  .pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .pill{
+    display:inline-flex;align-items:center;gap:6px;
+    background:#fff;border:1px solid var(--line);border-radius:99px;
+    padding:6px 12px;font-size:12.5px;font-weight:650;color:var(--ink-soft);
+  }
+  .pill.in{background:var(--brand-soft);border-color:#b8dcc8;color:var(--brand)}
+  .pill.out{background:#f7f8fa;color:var(--muted);text-decoration:line-through;opacity:.75}
+
+  .flowstrip{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin:22px 0 8px}
+  @media screen and (max-width:980px){
+    .flowstrip{grid-template-columns:repeat(3,1fr);gap:10px}
+    .flow-node:nth-child(3)::after{display:none}
+  }
+  @media screen and (max-width:560px){
+    .flowstrip{grid-template-columns:1fr 1fr}
+    .flow-node:nth-child(even)::after{display:none}
+  }
+  .flow-node{text-align:center;padding:0 6px;position:relative}
+  .flow-node::after{
+    content:"→";position:absolute;right:-4px;top:16px;color:var(--muted);font-size:15px;font-weight:600;
+  }
+  .flow-node:last-child::after{display:none}
+  .flow-node .n{
+    width:34px;height:34px;border-radius:10px;background:var(--brand);color:#fff;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:12px;margin-bottom:8px;
+  }
+  .flow-node h5{margin:0 0 2px;font-size:12.5px;font-weight:700}
+  .flow-node p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.35}
+
+  .jstep{display:grid;grid-template-columns:1fr 1.15fr;gap:22px;align-items:start;margin-top:28px}
+  .jstep.reverse{grid-template-columns:1.15fr 1fr}
+  @media screen and (max-width:860px){
+    .jstep,.jstep.reverse{grid-template-columns:1fr}
+  }
+  .jcopy h4{margin-top:0}
+  .jcopy p{font-size:14.2px;color:var(--ink-soft)}
+
+  .desk{
+    background:#dfe8e3;border:1px solid var(--line);border-radius:16px;
+    padding:12px;box-shadow:var(--shadow);
+  }
+  .desk-chrome{
+    display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);
+    border-radius:10px 10px 0 0;padding:9px 12px;
+  }
+  .desk-dots{display:flex;gap:5px}
+  .desk-dots i{width:9px;height:9px;border-radius:50%;display:block;background:#d5d9e8}
+  .desk-dots i:nth-child(1){background:#ff6b6b}
+  .desk-dots i:nth-child(2){background:#f5c542}
+  .desk-dots i:nth-child(3){background:#51cf66}
+  .desk-url{
+    flex:1;background:#f4f8f6;border:1px solid var(--line);border-radius:7px;
+    padding:5px 12px;font-size:12px;color:var(--muted);font-weight:500;
+  }
+  .desk-body{
+    background:#fff;border:1px solid var(--line);border-top:none;
+    border-radius:0 0 10px 10px;overflow:hidden;
+  }
+  .desk-navrow{
+    display:flex;gap:6px;padding:10px 14px;border-bottom:1px solid var(--line);background:#f7faf8;
+    font-size:12px;font-weight:650;color:var(--muted);flex-wrap:wrap;
+  }
+  .desk-navrow span.on{color:var(--brand);background:var(--brand-soft);padding:4px 9px;border-radius:7px}
+  .desk-navrow span{padding:4px 9px}
+  .desk-main{padding:16px 18px}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+  @media screen and (max-width:700px){.kpi-row{grid-template-columns:1fr 1fr}}
+  .kpi{
+    background:#f7faf8;border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  }
+  .kpi .l{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .kpi .v{font-family:"Space Grotesk",sans-serif;font-size:20px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
+  .kpi .d{font-size:11px;color:var(--signal);font-weight:600;margin-top:2px}
+  .kpi .d.down{color:var(--accent)}
+  .kpi .d.warn{color:var(--warn)}
+
+  .unit-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:12px}
+  @media screen and (max-width:700px){.unit-grid{grid-template-columns:repeat(3,1fr)}}
+  .unit{
+    border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center;background:#fff;
+  }
+  .unit .dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-bottom:6px;background:var(--signal)}
+  .unit.warn .dot{background:var(--warn)}
+  .unit.down .dot{background:var(--accent);animation:pulse 1.4s infinite}
+  .unit b{display:block;font-size:12px;font-weight:700}
+  .unit small{display:block;font-size:10.5px;color:var(--muted);margin-top:2px}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+  .alert-list{display:flex;flex-direction:column;gap:8px}
+  .alert{
+    display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);
+    border-radius:10px;padding:10px 12px;font-size:12.5px;background:#fff;
+  }
+  .alert .ch{
+    font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 7px;border-radius:6px;white-space:nowrap;
+  }
+  .alert .ch.line{background:#06c75522;color:#06c755}
+  .alert .ch.slack{background:#611f6922;color:#611f69}
+  .alert .ch.mail{background:var(--brand-soft);color:var(--brand)}
+  .alert b{display:block;font-size:12.5px}
+  .alert small{color:var(--muted)}
+
+  .pipe{
+    display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:8px;align-items:center;margin-top:18px;
+  }
+  @media screen and (max-width:760px){
+    .pipe{grid-template-columns:1fr;gap:10px}
+    .pipe .arrow{transform:rotate(90deg);justify-self:center}
+  }
+  .pipe-box{
+    background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px;text-align:center;box-shadow:var(--shadow);
+  }
+  .pipe-box.core{border-color:#b8dcc8;background:linear-gradient(180deg,#f2faf5,#fff)}
+  .pipe-box h5{margin:0 0 4px;font-size:13px;font-weight:700}
+  .pipe-box p{margin:0;font-size:11.5px;color:var(--muted)}
+  .pipe .arrow{color:var(--muted);font-weight:700;font-size:18px}
+
+  .replay{
+    border:1px solid var(--line);border-radius:12px;padding:14px;background:#0f1a16;color:#d7ebe1;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;line-height:1.55;
+  }
+  .replay .ok{color:#6ee7a8}
+  .replay .warn{color:#fbbf24}
+  .replay .dim{opacity:.55}
+
+  .credit{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--warn-soft);color:#92400e;font-size:12px;font-weight:700;
+    padding:5px 10px;border-radius:8px;margin-top:10px;
+  }
+
+  .tag{
+    display:inline-block;font-size:11.5px;font-weight:650;padding:3px 9px;border-radius:6px;
+    background:var(--brand-soft);color:var(--brand);white-space:nowrap;
+  }
+  .tag.gold{background:var(--accent-soft);color:var(--accent)}
+  .tag.green{background:var(--signal-soft);color:var(--signal)}
+
+  .mockcap{text-align:center;font-size:12px;color:var(--muted);margin-top:12px}
+
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}
+  @media screen and (max-width:860px){.compare{grid-template-columns:1fr}}
+
+  .steps{counter-reset:ns;margin:18px 0 0;padding:0;list-style:none}
+  .steps li{
+    counter-increment:ns;position:relative;padding:16px 16px 16px 58px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;box-shadow:var(--shadow);font-size:14px;color:var(--ink-soft);
+  }
+  .steps li::before{
+    content:counter(ns);position:absolute;left:16px;top:16px;
+    width:28px;height:28px;border-radius:8px;background:var(--brand);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;
+  }
+  .steps li b{color:var(--ink)}
+
+  footer{padding:38px 0 60px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+  footer b{color:var(--ink-soft)}
+  .contact-row{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px;font-size:14px;color:var(--ink-soft)}
+  .contact-row a{font-weight:650;text-decoration:none}
+
+  @page{size:Letter;margin:0.4in 0.45in}
+  @media print{
+    *{-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important}
+    html,body{background:#fff !important}
+    .topbar{display:none !important}
+    .wrap{max-width:none !important;width:100% !important;padding:0 !important}
+    section{padding:18px 0 !important;break-inside:auto;page-break-inside:auto;scroll-margin-top:0}
+    .cover{
+      background:linear-gradient(155deg,#0c1a14 0%,#123528 45%,#1a4a36 100%) !important;
+      padding:28px 22px 24px !important;margin:0 0 8px !important;border-radius:14px;overflow:visible !important;
+    }
+    .cover h1{font-size:26px !important}
+    .cover .sub{font-size:13px !important}
+    h2,h3,h4,.kicker{break-after:avoid;page-break-after:avoid}
+    h2{font-size:20px !important}
+    .lede{font-size:13px !important}
+    .grid.g2{grid-template-columns:repeat(2,1fr) !important}
+    .grid.g3{grid-template-columns:repeat(3,1fr) !important}
+    .grid.g4{grid-template-columns:repeat(4,1fr) !important}
+    .compare{grid-template-columns:1fr 1fr !important}
+    .pipe{grid-template-columns:1fr auto 1fr auto 1fr !important}
+    .pipe .arrow{transform:none !important}
+    .flowstrip{grid-template-columns:repeat(5,1fr) !important}
+    .kpi-row{grid-template-columns:repeat(4,1fr) !important}
+    .unit-grid{grid-template-columns:repeat(5,1fr) !important}
+    .tl-item{grid-template-columns:100px 1fr !important}
+    .jstep,.jstep.reverse{grid-template-columns:1fr !important;gap:14px !important}
+    .jcopy,.desk,.sys-block,.card,.stat,.tl-body,.callout,.steps li,.pipe,.flowstrip{
+      break-inside:avoid;page-break-inside:avoid;box-shadow:none !important;
+    }
+    .desk{padding:8px !important}
+    footer{padding:18px 0 8px !important}
+    a{text-decoration:none;color:inherit}
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">SoftwareBrio <span>× JOYCLE</span></div>
+    <nav>
+      <a href="#context">Context</a>
+      <a href="#case">Case</a>
+      <a href="#trial">Trial</a>
+      <a href="#fleet">Fleet view</a>
+      <a href="#scope">Scope</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</div>
+
+<section class="cover">
+  <div class="wrap">
+    <div class="eyebrow">Technical collaboration proposal</div>
+    <h1>JOYCLE BOARD</h1>
+    <p class="sub">Resilient telemetry and fleet health for your 10-unit rollout, Woven City demos, and remote / island sites — without committing to an open-ended retainer first.<br>
+    Prepared for <strong>Yutaro Koyanagi</strong>, Founder &amp; CEO — JOYCLE · by Aditi Agrawal &amp; Parag Goyal, SoftwareBrio<br>
+    18 November 2026 · Bengaluru Tech Summit (BIEC)</p>
+    <div class="meta">
+      <div><span>Option A</span><b>1-week audit · $2,500</b></div>
+      <div><span>Option B</span><b>6-week pilot · $21,000</b></div>
+      <div><span>Focus</span><b>Resilience + fleet dashboard</b></div>
+      <div><span>IP</span><b>100% JOYCLE ownership</b></div>
+    </div>
+  </div>
+</section>
+
+<section id="context">
+  <div class="wrap">
+    <div class="kicker">Context</div>
+    <h2>JOYCLE BOARD becomes core ops infrastructure as you scale</h2>
+    <p class="lede">As JOYCLE moves from early installations to broader commercial deployments — including your initial 10-unit rollout, Woven City demonstrations, and remote or island sites in Southeast Asia — JOYCLE BOARD becomes core operational infrastructure.</p>
+    <p class="lede">In unstable-connectivity environments, dropped telemetry, duplicate logs, and delayed fault visibility increase on-site maintenance effort and complicate CO₂ and resource-recovery tracking.</p>
+
+    <div class="grid g4" style="margin-top:26px">
+      <div class="stat"><b>10</b><span>Unit rollout to support first</span></div>
+      <div class="stat"><b>4G/LTE</b><span>Drop / reconnect is the hard part</span></div>
+      <div class="stat"><b>2 steps</b><span>Audit first, or go straight to pilot</span></div>
+      <div class="stat"><b>Low risk</b><span>Fixed scope before any retainer</span></div>
+    </div>
+
+    <div class="pipe">
+      <div class="pipe-box">
+        <h5>Field units</h5>
+        <p>Sites · islands · Woven City</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pipe-box core">
+        <h5>Resilient ingestion</h5>
+        <p>Dedup · replay · delayed events</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="pipe-box">
+        <h5>JOYCLE BOARD</h5>
+        <p>Fleet health · alerts · CO₂ logs</p>
+      </div>
+    </div>
+    <p class="mockcap">One relevant case example, then a narrow two-step trial to evaluate technical and working fit.</p>
+  </div>
+</section>
+
+<section id="case">
+  <div class="wrap">
+    <div class="kicker">Relevant case</div>
+    <h2>Equipment monitoring &amp; fault-tolerant data pipeline</h2>
+    <p class="lede">Distributed industrial equipment across multiple sites with unstable connectivity — delayed or duplicate sensor events, frequent manual checks. The same class of problem JOYCLE BOARD will face at scale.</p>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="sys-block lock">
+        <div class="slabel">What we built</div>
+        <h3>Resilient data pipeline</h3>
+        <p class="sdesc">Apache Kafka &amp; Flink streaming ingestion designed to deduplicate records and handle delayed or out-of-order events when sites temporarily lost connectivity and reconnected.</p>
+        <div class="sys-pipes">
+          <span>Kafka ingest</span>
+          <span>Flink dedup</span>
+          <span>Out-of-order events</span>
+          <span>Reconnect replay</span>
+        </div>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">What ops saw</div>
+        <h3>Equipment monitoring dashboard</h3>
+        <p class="sdesc">Operator dashboard tracking live unit status, historical telemetry, and automated anomaly / maintenance alerts to catch issues earlier.</p>
+        <div class="sys-pipes">
+          <span>Live status</span>
+          <span>History</span>
+          <span>Anomaly alerts</span>
+          <span>Less manual checks</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="jstep" style="margin-top:34px">
+      <div class="jcopy">
+        <h4>When the network drops, the log must still be trustworthy</h4>
+        <p>Sites reconnect with delayed bursts. Without deduplication and ordered reconciliation, CO₂ and resource-recovery ledgers fill with duplicates — and operators stop trusting the board.</p>
+        <div class="callout soft" style="margin-top:14px">
+          <b>Outcome.</b> A reliable single view of field equipment without corrupted logs during network drops — helping reduce manual inspection checks and unplanned downtime.
+        </div>
+      </div>
+      <div>
+        <div class="replay">
+          <div class="dim"># reconnect burst · site SEA-04 · 14:22 JST</div>
+          <div class="warn">WARN  delayed batch 847 events · gap 00:41:12</div>
+          <div class="ok">OK    dedup window · 312 duplicates dropped</div>
+          <div class="ok">OK    reorder by device_ts · watermark advanced</div>
+          <div class="ok">OK    CO₂ ledger reconciled · +0.00 duplicate kg</div>
+          <div class="dim"># operator view refreshed · no manual backfill</div>
+        </div>
+        <p class="mockcap">Indicative reconnect handling — dedup + delayed-event reconciliation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trial">
+  <div class="wrap">
+    <div class="kicker">Proposed initial trial</div>
+    <h2>Two-step, de-risked structure</h2>
+    <p class="lede">Rather than committing to an open-ended retainer before reviewing your current setup, start with Option A (1-week audit) or move directly into Option B (6-week focused pilot sprint).</p>
+
+    <div class="compare">
+      <div class="sys-block lock">
+        <div class="slabel">Option A · lowest-risk starter</div>
+        <h3>1-Week Architecture &amp; Telemetry Audit</h3>
+        <p class="sdesc">Review JOYCLE BOARD’s current architecture and connectivity bottlenecks before writing production code.</p>
+        <div class="price">$2,500 <small>≈ ¥400,000 JPY · 5 business days</small></div>
+        <div class="credit">100% credited toward Option B within 30 days</div>
+        <h4>Deliverables (end of Week 1)</h4>
+        <ul class="clean check">
+          <li><b>Technical review</b> of ingestion pipeline, data schema, and failure points during 4G/LTE drops</li>
+          <li><b>Resilience &amp; Scale Blueprint</b> — offline replay / dedup, multi-site alerting, clean telemetry for future failure-prediction models</li>
+          <li><b>Scoped Phase 2 plan</b> ready to execute</li>
+        </ul>
+      </div>
+      <div class="sys-block stretch">
+        <div class="slabel">Option B · audit + build</div>
+        <h3>6-Week Focused Pilot Sprint</h3>
+        <p class="sdesc">Audit + core resilience &amp; fleet dashboard build — both pillars, end-to-end handover.</p>
+        <div class="price">$21,000 <small>≈ ¥3.35M JPY · 40% kickoff · 30% W3 · 30% sign-off</small></div>
+        <h4>What ships</h4>
+        <ul class="clean check">
+          <li><b>Cloud ingestion resilience</b> — dedup, delayed-event handling, reconciliation</li>
+          <li><b>Fleet health &amp; alerting</b> — multi-site operator view + disconnect / anomaly alerts</li>
+          <li><b>Stress test + QA</b> — drop/reconnect sims, EN/JP labels if needed, full IP handover</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="option-b">
+  <div class="wrap">
+    <div class="kicker">Option B · week by week</div>
+    <h2>From audit lock to code &amp; IP handover</h2>
+    <p class="lede">Team: 1 Tech Lead (ex-Google / Meta) + 2 Senior Engineers · 3.5-hour IST–JST daily overlap with Tokyo.</p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-time">Week 1</div>
+        <div class="tl-body">
+          <h5>Audit &amp; architecture lock</h5>
+          <p>Technical review of your existing JOYCLE BOARD stack (same as Option A) and confirmation of pilot success criteria with your Tokyo team.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Weeks 2–4</div>
+        <div class="tl-body">
+          <h5>Core engineering · both pillars</h5>
+          <p><b>Cloud ingestion resilience</b> — strengthen API / broker ingestion for intermittent connectivity so operational &amp; CO₂ logs stay accurate. <b>Fleet health &amp; alerting</b> — multi-site operator view plus automated disconnect and anomaly alerts (Slack, Email, LINE, or Webhook) for the 10-unit rollout.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Week 5</div>
+        <div class="tl-body">
+          <h5>Stress testing &amp; integration</h5>
+          <p>Simulated network drop / reconnect testing, staging integration, and validation against real or replayed unit logs.</p>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-time">Week 6</div>
+        <div class="tl-body">
+          <h5>QA &amp; handover</h5>
+          <p>Load verification, documentation (including EN / JP UI labels if needed), and full code / IP handover.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flowstrip" style="margin-top:28px">
+      <div class="flow-node"><div class="n">1</div><h5>Audit</h5><p>Stack + criteria</p></div>
+      <div class="flow-node"><div class="n">2</div><h5>Ingest</h5><p>Dedup · replay</p></div>
+      <div class="flow-node"><div class="n">3</div><h5>Fleet</h5><p>10-unit view</p></div>
+      <div class="flow-node"><div class="n">4</div><h5>Stress</h5><p>Drop / reconnect</p></div>
+      <div class="flow-node"><div class="n">5</div><h5>Handover</h5><p>Code · docs · IP</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="fleet">
+  <div class="wrap">
+    <div class="kicker">What the pilot looks like</div>
+    <h2>Fleet health for the 10-unit rollout</h2>
+    <p class="lede">A multi-site operator view so Tokyo sees the same truth as the field — including when a unit on an island site silently drops off 4G.</p>
+
+    <div class="jstep">
+      <div class="jcopy">
+        <h4>One board for live status, history, and maintenance signals</h4>
+        <p>Each unit shows online / degraded / offline at a glance. Disconnect and anomaly alerts fire to Slack, Email, LINE, or Webhook — tailored for how your team already works.</p>
+        <ul class="clean check" style="margin-top:12px">
+          <li><b>Live unit status</b> across the initial 10-unit fleet</li>
+          <li><b>Historical telemetry</b> that survives reconnect bursts</li>
+          <li><b>Automated alerts</b> before someone drives to the site</li>
+        </ul>
+      </div>
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">board.joycle.jp / fleet</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-navrow">
+              <span class="on">Fleet</span>
+              <span>Telemetry</span>
+              <span>CO₂ / recovery</span>
+              <span>Alerts</span>
+              <span>Sites</span>
+            </div>
+            <div class="desk-main">
+              <div class="kpi-row">
+                <div class="kpi"><div class="l">Online</div><div class="v">8/10</div><div class="d">stable</div></div>
+                <div class="kpi"><div class="l">Degraded</div><div class="v">1</div><div class="d warn">LTE weak</div></div>
+                <div class="kpi"><div class="l">Offline</div><div class="v">1</div><div class="d down">SEA-04 · 41m</div></div>
+                <div class="kpi"><div class="l">CO₂ today</div><div class="v">1.24t</div><div class="d">ledger clean</div></div>
+              </div>
+              <div class="unit-grid">
+                <div class="unit"><span class="dot"></span><b>JP-01</b><small>Tokyo</small></div>
+                <div class="unit"><span class="dot"></span><b>JP-02</b><small>Woven</small></div>
+                <div class="unit"><span class="dot"></span><b>JP-03</b><small>Woven</small></div>
+                <div class="unit warn"><span class="dot"></span><b>JP-04</b><small>Weak LTE</small></div>
+                <div class="unit"><span class="dot"></span><b>JP-05</b><small>Online</small></div>
+                <div class="unit"><span class="dot"></span><b>SEA-01</b><small>Online</small></div>
+                <div class="unit"><span class="dot"></span><b>SEA-02</b><small>Online</small></div>
+                <div class="unit"><span class="dot"></span><b>SEA-03</b><small>Online</small></div>
+                <div class="unit down"><span class="dot"></span><b>SEA-04</b><small>Offline</small></div>
+                <div class="unit"><span class="dot"></span><b>SEA-05</b><small>Online</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Indicative JOYCLE BOARD fleet view — not a firmware rewrite.</p>
+      </div>
+    </div>
+
+    <div class="jstep reverse" style="margin-top:40px">
+      <div>
+        <div class="desk">
+          <div class="desk-chrome">
+            <div class="desk-dots"><i></i><i></i><i></i></div>
+            <div class="desk-url">board.joycle.jp / alerts</div>
+          </div>
+          <div class="desk-body">
+            <div class="desk-main">
+              <div class="alert-list">
+                <div class="alert">
+                  <span class="ch line">LINE</span>
+                  <div><b>SEA-04 disconnected · 41 min</b><small>Island site · last heartbeat 13:41 JST · replay pending</small></div>
+                </div>
+                <div class="alert">
+                  <span class="ch slack">Slack</span>
+                  <div><b>JP-04 LTE signal degraded</b><small>Anomaly · packet loss &gt; 18% · watch window 30m</small></div>
+                </div>
+                <div class="alert">
+                  <span class="ch mail">Email</span>
+                  <div><b>Reconnect reconciled · SEA-03</b><small>214 delayed events · 0 duplicate CO₂ kg after dedup</small></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mockcap">Slack · Email · LINE · Webhook — pick the channel your ops already use.</p>
+      </div>
+      <div class="jcopy">
+        <h4>Alerts that fire when connectivity fails — not only when sensors fail</h4>
+        <p>Disconnect detection is as important as process anomalies for remote and island sites. Operators get the signal early; the pipeline keeps the ledger honest when the unit comes back.</p>
+        <div class="pillrow">
+          <span class="pill in">Slack</span>
+          <span class="pill in">Email</span>
+          <span class="pill in">LINE</span>
+          <span class="pill in">Webhook</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="scope">
+  <div class="wrap">
+    <div class="kicker">Boundaries &amp; collaboration</div>
+    <h2>Scope, Japan-ready working model, and prerequisites</h2>
+
+    <div class="grid g2" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">In scope</h4>
+        <ul class="clean check">
+          <li>Cloud ingestion, backend data pipelines, APIs</li>
+          <li>JOYCLE BOARD dashboard work</li>
+          <li>JP / EN UI labels and docs if needed</li>
+          <li>100% IP ownership to JOYCLE</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Out of scope (unless open edge APIs)</h4>
+        <ul class="clean">
+          <li>Modifications to locked third-party PLC / edge hardware firmware</li>
+          <li>Open-ended retainer before architecture review</li>
+          <li>Cross-client model training on your telemetry</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pillrow" style="margin-top:18px">
+      <span class="pill in">Cloud ingestion</span>
+      <span class="pill in">Pipelines &amp; APIs</span>
+      <span class="pill in">Dashboard</span>
+      <span class="pill in">JP / EN ready</span>
+      <span class="pill in">Full IP handover</span>
+      <span class="pill out">Locked PLC firmware</span>
+      <span class="pill out">Open-ended retainer first</span>
+    </div>
+
+    <div class="grid g3" style="margin-top:18px">
+      <div class="card">
+        <h4 style="margin-top:0">Japan-ready collaboration</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Comfortable with Japanese-language schemas, UI localization (JP/EN), and documentation alongside your Tokyo team. Daily IST–JST overlap built into the sprint.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">Day-1 prerequisites</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">Sprint clock starts once JOYCLE provides cloud / staging access, sample telemetry payloads, and a designated technical point of contact in Tokyo.</p>
+      </div>
+      <div class="card">
+        <h4 style="margin-top:0">100% IP ownership</h4>
+        <p style="margin:0;font-size:13.6px;color:var(--ink-soft)">All code, schemas, and documentation produced during the engagement belong exclusively to JOYCLE.</p>
+      </div>
+    </div>
+
+    <div class="callout warn" style="margin-top:18px">
+      <b>How to start.</b> Choose Option A to de-risk with a fixed $2,500 audit (fully credited to Option B within 30 days), or go straight to the 6-week $21,000 pilot if the stack and success criteria are already clear.
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="kicker">Next conversation</div>
+    <h2>Let’s pick Option A or B at BIEC</h2>
+    <p class="lede">Happy to walk through the case example, the two-step structure, and what Day-1 access we need from Tokyo.</p>
+    <ol class="steps">
+      <li><b>Confirm whether you want the 1-week audit first</b> or move directly into the 6-week pilot sprint.</li>
+      <li><b>Align on success criteria</b> for the 10-unit rollout — especially disconnect visibility and CO₂ / recovery log integrity.</li>
+      <li><b>Name the Tokyo technical POC</b> and staging access path so Week 1 can start cleanly.</li>
+    </ol>
+    <div class="card" style="margin-top:18px">
+      <h4 style="margin-top:0">Contact</h4>
+      <p style="margin:0 0 6px;font-size:15px"><b>Parag Goyal &amp; Aditi Agrawal</b> · SoftwareBrio</p>
+      <div class="contact-row">
+        <a href="mailto:support@softwarebrio.com">support@softwarebrio.com</a>
+        <a href="tel:+918147842943">+91-8147842943</a>
+        <a href="https://softwarebrio.com" target="_blank" rel="noopener">softwarebrio.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <b>SoftwareBrio × JOYCLE</b> — Technical Collaboration Proposal: JOYCLE BOARD.<br>
+    Prepared for Yutaro Koyanagi · 18 November 2026 · Bengaluru Tech Summit (BIEC) · Option A $2,500 · Option B $21,000 · 100% IP to JOYCLE.
+  </div>
+</footer>
+
+</body>
+</html>
